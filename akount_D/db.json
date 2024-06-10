@@ -1,0 +1,30 @@
+{
+    "content": [
+        {
+            "date": "2024-06-01",
+            "type": "income",
+            "category": "월급",
+            "amount": 3000000,
+            "memo": "6월 급여"
+        },
+        {
+            "date": "2024-06-02",
+            "type": "expense",
+            "category": "식비",
+            "amount": 12000,
+            "memo": "회사 점심"
+        }
+    ],
+    "incomeCategory": ["월급", "용돈", "이자"],
+    "expenseCategory": ["식비", "교통비", "유흥", "공과금"],
+    "profile": [
+        {
+            "id": "1",
+            "account_id": "detective",
+            "pw": "qwer",
+            "nick_name": "탐정",
+            "phone_number": "010-1234-5678",
+            "image": "test"
+        }
+    ]
+}
