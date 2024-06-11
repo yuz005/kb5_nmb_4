@@ -10,11 +10,16 @@ import "bootstrap/dist/css/bootstrap.css";
 
 // FontAwesome 설정
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faHouse, faTree, faDog } from "@fortawesome/free-solid-svg-icons";
+import {
+    faHouse,
+    faCalendarPlus,
+    faChartPie,
+    faGear,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 // 아이콘을 라이브러리에 추가
-library.add(faHouse, faTree, faDog);
+library.add(faHouse, faCalendarPlus, faChartPie, faGear);
 
 const app = createApp(App);
 
