@@ -1,64 +1,63 @@
 <template>
     <!-- 네비게이션 바를 정의합니다. Bootstrap 클래스들을 사용합니다. -->
-    <nav class="bg-light flex-column sidebar ps-3 pt-2">
-        <div class="card mb-3">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img
-                        src="../assets/profile.png"
-                        class="profile-card"
-                        alt="..."
-                    />
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <p class="card-text">
-                            <small class="text-body-secondary">{{
-                                profileNickname
-                            }}</small>
-                        </p>
-                        <p class="card-text">
-                            <small class="text-body-secondary">{{
-                                profileEmail
-                            }}</small>
-                        </p>
+    <div class="container">
+        <nav class="bg-light sidebar ps-3 pt-2">
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img
+                            src="../assets/profile.png"
+                            class="profile-card"
+                            alt="..."
+                        />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <small class="text-body-secondary"
+                                    >profile 연동</small
+                                >
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- 브랜드 이름을 표시합니다. -->
-        <span class="navbar-brand ps-2">지갑 탐정</span>
-        <!-- 네비게이션 메뉴를 정의합니다. 'collapse' 클래스를 사용하여 기본적으로 숨겨지도록 설정합니다. -->
-        <div class="mt-3">
-            <!-- 네비게이션 메뉴 항목을 정의합니다. -->
-            <ul class="navbar-nav flex-column">
-                <li class="nav-item">
-                    <!-- Vue Router를 사용하여 페이지 간의 네비게이션을 처리합니다. -->
-                    <router-link class="nav-link" to="/">
-                        <font-awesome-icon :icon="['fas', 'house']" /> Home
-                    </router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" to="/write">
-                        <font-awesome-icon :icon="['fas', 'calendar-plus']" />
-                        추가 / 수정
-                    </router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" to="/summary">
-                        <font-awesome-icon :icon="['fas', 'chart-pie']" /> 소비
-                        요약
-                    </router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" to="/profile">
-                        <font-awesome-icon :icon="['fas', 'gear']" /> 마이
-                        페이지
-                    </router-link>
-                </li>
-            </ul>
-        </div>
-    </nav>
+            <!-- 브랜드 이름을 표시합니다. -->
+            <span class="navbar-brand ps-2">지갑 탐정</span>
+            <!-- 네비게이션 메뉴를 정의합니다. 'collapse' 클래스를 사용하여 기본적으로 숨겨지도록 설정합니다. -->
+            <div class="mt-3">
+                <!-- 네비게이션 메뉴 항목을 정의합니다. -->
+                <ul class="navbar-nav flex-column">
+                    <li class="nav-item">
+                        <!-- Vue Router를 사용하여 페이지 간의 네비게이션을 처리합니다. -->
+                        <router-link class="nav-link" to="/">
+                            <font-awesome-icon :icon="['fas', 'house']" /> Home
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/write">
+                            <font-awesome-icon
+                                :icon="['fas', 'calendar-plus']"
+                            />
+                            추가 / 수정
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/summary">
+                            <font-awesome-icon :icon="['fas', 'chart-pie']" />
+                            소비 요약
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/profile">
+                            <font-awesome-icon :icon="['fas', 'gear']" /> 마이
+                            페이지
+                        </router-link>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
 </template>
 
 <script setup lang="ts">
