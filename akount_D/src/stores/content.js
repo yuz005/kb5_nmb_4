@@ -4,69 +4,78 @@ import axios from "axios";
 
 const BASEURI = "http://localhost:3000"; // JSON 서버 주소
 
-export const useMainStore = defineStore({
-    id: "main",
-    state: () => ({
-        profile: {
-            nickname: "",
-            email: "",
-            profileImage: "",
-            balance: 0,
-        },
-        transactions: [],
-        categories: [],
-    }),
-    actions: {
-        async fetchProfile() {
-            try {
-                const response = await axios.get(`${BASEURI}/profile`);
-                this.profile = response.data;
-            } catch (error) {
-                console.error("Error fetching profile:", error);
-            }
-        },
-        async fetchTransactions() {
-            try {
-                const response = await axios.get(`${BASEURI}/transactions`);
-                this.transactions = response.data;
-            } catch (error) {
-                console.error("Error fetching transactions:", error);
-            }
-        },
-        async fetchCategories() {
-            try {
-                const response = await axios.get(`${BASEURI}/categories`);
-                this.categories = response.data;
-            } catch (error) {
-                console.error("Error fetching categories:", error);
-            }
-        },
-        async fetchAllData() {
-            try {
-                const profileResponse = await axios.get(`${BASEURI}/profile`);
-                this.profile = profileResponse.data;
-                const transactionsResponse = await axios.get(
-                    `${BASEURI}/transactions`
-                );
-                this.transactions = transactionsResponse.data;
-                const categoriesResponse = await axios.get(
-                    `${BASEURI}/categories`
-                );
-                this.categories = categoriesResponse.data;
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        },
-        setProfile(profile) {
-            this.profile = profile;
-        },
-        addTransaction(transaction) {
-            this.transactions.push(transaction);
-        },
-        updateBalance(amount) {
-            this.profile.balance += amount;
-        },
-    },
+export const useMainStore = defineStore("main", () => {
+    const profile = reactive({
+        nickname: "",
+        email: "",
+        profileImage: "",
+        balance: 0,
+    });
+
+    const transactions = reactive([]);
+    const categories = reactive([]);
+
+    const fetchProfile = async () => {
+        try {
+            const response = await axios.get(`${BASEURI}/profile`);
+            Object.assign(profile, response.data);
+        } catch (error) {
+            console.error("Error fetching profile:", error);
+        }
+    };
+
+    const fetchTransactions = async () => {
+        try {
+            const response = await axios.get(`${BASEURI}/transactions`);
+            transactions.splice(0, transactions.length, ...response.data);
+        } catch (error) {
+            console.error("Error fetching transactions:", error);
+        }
+    };
+
+    const fetchCategories = async () => {
+        try {
+            const response = await axios.get(`${BASEURI}/categories`);
+            categories.splice(0, categories.length, ...response.data);
+        } catch (error) {
+            console.error("Error fetching categories:", error);
+        }
+    };
+
+    const fetchAllData = async () => {
+        try {
+            await fetchProfile();
+            await fetchTransactions();
+            await fetchCategories();
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    const setProfile = (newProfile) => {
+        Object.assign(profile, newProfile);
+    };
+
+    const addTransaction = (transaction) => {
+        transactions.push(transaction);
+    };
+
+    const updateBalance = (amount) => {
+        profile.balance += amount;
+    };
+
+    return {
+        profile,
+        transactions,
+        categories,
+        fetchProfile,
+        fetchTransactions,
+        fetchCategories,
+        fetchAllData,
+        setProfile,
+        addTransaction,
+        updateBalance,
+    };
 });
 
 export const useContentStore = defineStore("contentList", () => {
