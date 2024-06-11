@@ -28,28 +28,30 @@
                     <button @click="nextMonth" class="arrow-button">→</button>
                 </div>
             </div>
-            <div class="content">
-                <CalendarComponent
-                    :year="currentYear"
-                    :month="currentMonth"
-                    :content="content"
-                    @showContent="showContent"
-                />
-                <div class="daily-summary" :class="{ editing: isEditing }">
-                    <h2>당일 소비 현황</h2>
-                    <textarea
-                        v-if="isEditing"
-                        v-model="selectedContent"
-                        class="content-input"
-                    ></textarea>
-                    <p v-else>{{ selectedContent }}</p>
-                    <div class="buttons">
-                        <button @click="saveContent" class="save-button">
-                            저장
-                        </button>
-                        <button @click="editContent" class="edit-button">
-                            수정
-                        </button>
+            <div class="content-wrapper">
+                <div class="content">
+                    <CalendarComponent
+                        :year="currentYear"
+                        :month="currentMonth"
+                        :content="content"
+                        @showContent="showContent"
+                    />
+                    <div class="daily-summary" :class="{ editing: isEditing }">
+                        <h2>당일 소비 현황</h2>
+                        <textarea
+                            v-if="isEditing"
+                            v-model="selectedContent"
+                            class="content-input"
+                        ></textarea>
+                        <p v-else>{{ selectedContent }}</p>
+                        <div class="buttons">
+                            <button @click="saveContent" class="save-button">
+                                저장
+                            </button>
+                            <button @click="editContent" class="edit-button">
+                                수정
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -63,8 +65,8 @@ import { useMainStore, useContentStore } from "../stores/content.js";
 import CalendarComponent from "../components/CalendarComponent.vue";
 import Nav from "../components/Nav.vue";
 
-const store = useMainStore();
-const profile = store.profile;
+const mainStore = useMainStore();
+const profile = mainStore.profile;
 
 const contentStore = useContentStore();
 const content = contentStore.contentList;
@@ -79,7 +81,7 @@ const isEditingMonth = ref(false);
 const selectedDate = ref(null);
 
 onMounted(() => {
-    store.fetchAllData();
+    mainStore.fetchAllData();
     contentStore.fetchContent();
 });
 
@@ -114,7 +116,6 @@ const showContent = ({ year, month, day, isDoubleClick, content }) => {
 const saveContent = () => {
     if (selectedDate.value) {
         const { year, month, day } = selectedDate.value;
-        // 여기에 내용을 저장하는 로직을 추가합니다 (예: 로컬 스토리지 또는 API 호출)
         content.value[`${year}-${month + 1}-${day}`] = selectedContent.value;
         console.log(
             `Content for ${year}-${month + 1}-${day} saved: ${
