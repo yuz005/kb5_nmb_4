@@ -13,9 +13,14 @@
                 <div class="col-md-8">
                     <div class="card-body">
                         <p class="card-text">
-                            <small class="text-body-secondary"
-                                >profile 연동</small
-                            >
+                            <small class="text-body-secondary">{{
+                                profileNickname
+                            }}</small>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-body-secondary">{{
+                                profileEmail
+                            }}</small>
                         </p>
                     </div>
                 </div>
@@ -57,7 +62,14 @@
 </template>
 
 <script setup lang="ts">
+import { defineProps } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+const props = defineProps({
+    profileImage: String,
+    profileNickname: String,
+    profileEmail: String,
+});
 </script>
 
 <style scoped>
