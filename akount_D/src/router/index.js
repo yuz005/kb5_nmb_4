@@ -10,10 +10,10 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         { path: "/", name: "home", component: Home },
-        { path: "/Write", name: "Write", component: About },
-        { path: "/Summary", name: "Summary", component: TodoList },
-        { path: "/Profile", name: "Profile", component: TodoList },
-        { path: "/:paths(.*)*", name: "NotFound", component: NotFound },
+        { path: "/write", name: "Write", component: Write },
+        { path: "/summary", name: "Summary", component: Summary },
+        { path: "/profile", name: "Profile", component: Profile },
+        { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
     ],
 });
 
