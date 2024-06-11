@@ -1,25 +1,95 @@
 <template>
     <!-- 네비게이션 바를 정의합니다. Bootstrap 클래스들을 사용합니다. -->
-    <nav class="bg-dark navbar-dark flex-column">
+    <nav class="bg-light flex-column sidebar ps-3 pt-2">
+        <div class="card mb-3">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img
+                        src="../assets/profile.png"
+                        class="profile-card"
+                        alt="..."
+                    />
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <small class="text-body-secondary">{{
+                                profileNickname
+                            }}</small>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-body-secondary">{{
+                                profileEmail
+                            }}</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- 브랜드 이름을 표시합니다. -->
-        <span class="navbar-brand ps-2">TodoList App</span>
+        <span class="navbar-brand ps-2">지갑 탐정</span>
         <!-- 네비게이션 메뉴를 정의합니다. 'collapse' 클래스를 사용하여 기본적으로 숨겨지도록 설정합니다. -->
-        <div>
+        <div class="mt-3">
             <!-- 네비게이션 메뉴 항목을 정의합니다. -->
             <ul class="navbar-nav flex-column">
                 <li class="nav-item">
                     <!-- Vue Router를 사용하여 페이지 간의 네비게이션을 처리합니다. -->
-                    <router-link class="nav-link" to="/">Home</router-link>
+                    <router-link class="nav-link" to="/">
+                        <font-awesome-icon :icon="['fas', 'house']" /> Home
+                    </router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link" to="/about"
-                        >About</router-link
-                    >
+                    <router-link class="nav-link" to="/write">
+                        <font-awesome-icon :icon="['fas', 'calendar-plus']" />
+                        추가 / 수정
+                    </router-link>
                 </li>
-                <li class="nav-item"></li>
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/summary">
+                        <font-awesome-icon :icon="['fas', 'chart-pie']" /> 소비
+                        요약
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/profile">
+                        <font-awesome-icon :icon="['fas', 'gear']" /> 마이
+                        페이지
+                    </router-link>
+                </li>
             </ul>
         </div>
     </nav>
 </template>
 
-<script setup></script>
+<script setup lang="ts">
+import { defineProps } from "vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+const props = defineProps({
+    profileImage: String,
+    profileNickname: String,
+    profileEmail: String,
+});
+</script>
+
+<style scoped>
+.sidebar {
+    width: 200px; /* 네비게이션 바의 너비를 설정합니다. */
+    margin: 0; /* 모든 외부 여백을 제거합니다. */
+    padding: 0; /* 모든 내부 여백을 제거합니다. */
+    position: fixed; /* 화면에 고정합니다. */
+    top: 0; /* 상단 여백을 제거합니다. */
+    left: 0; /* 왼쪽 여백을 제거합니다. */
+    height: 100%; /* 화면 높이에 맞춥니다. */
+}
+.profile-card {
+    width: 100%;
+    background-color: #f8f9fa; /* 카드 배경색 */
+    border-radius: 15px; /* 카드의 둥근 모서리 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 카드의 그림자 */
+    overflow: hidden; /* 둥근 모서리 외부의 내용이 잘리도록 설정 */
+}
+.card {
+    border: none;
+}
+</style>
