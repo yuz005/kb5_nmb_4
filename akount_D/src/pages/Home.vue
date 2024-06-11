@@ -59,12 +59,15 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useMainStore } from "../stores/content.js"; // 경로를 content.js로 수정
-import CalendarComponent from "../components/CalendarComponent.vue"; // 캘린더 컴포넌트
-import Nav from "../components/Nav.vue"; // 네비게이션 컴포넌트
+import { useMainStore, useContentStore } from "../stores/content.js";
+import CalendarComponent from "../components/CalendarComponent.vue";
+import Nav from "../components/Nav.vue";
 
 const store = useMainStore();
 const profile = store.profile;
+
+const contentStore = useContentStore();
+const content = contentStore.contentList;
 
 const currentYear = ref(new Date().getFullYear());
 const currentMonth = ref(new Date().getMonth());
@@ -75,13 +78,9 @@ const isEditingYear = ref(false);
 const isEditingMonth = ref(false);
 const selectedDate = ref(null);
 
-const content = ref({
-    // 예시: 내용이 있는 날짜들
-    // '2024-6-1': '6월 1일 내용',
-});
-
 onMounted(() => {
     store.fetchAllData();
+    contentStore.fetchContent();
 });
 
 const prevMonth = () => {
@@ -182,17 +181,20 @@ const disableEditing = () => {
     display: flex;
     flex-direction: column;
     padding: 20px;
+    align-items: center; /* 중앙 정렬 */
 }
 
 .header {
     display: flex;
     justify-content: space-between;
+    width: 100%; /* 전체 너비로 확장 */
+    max-width: 1200px; /* 원하는 최대 너비로 설정 */
 }
 
 .calendar-header {
     display: flex;
     align-items: center;
-    justify-content: center; /* 가운데 정렬 */
+    justify-content: center;
     width: 100%;
 }
 
@@ -201,7 +203,7 @@ const disableEditing = () => {
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    margin: 0 10px; /* 화살표 버튼 간격 */
+    margin: 0 10px;
 }
 
 .date-display {
@@ -223,9 +225,18 @@ const disableEditing = () => {
     cursor: pointer;
 }
 
+.content-wrapper {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    width: 100%;
+}
+
 .content {
     display: flex;
     margin-top: 20px;
+    width: 100%;
+    max-width: 1200px; /* 원하는 최대 너비로 설정 */
+    justify-content: space-between; /* 캘린더와 요약을 양 끝으로 배치 */
 }
 
 .calendar {
@@ -242,8 +253,8 @@ const disableEditing = () => {
 }
 
 .daily-summary h2 {
-    text-align: center; /* 제목을 가운데 정렬 */
-    margin-bottom: 20px; /* 아래쪽 여백 추가 */
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .daily-summary.editing {
