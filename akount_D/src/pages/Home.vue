@@ -58,8 +58,8 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useMainStore } from "../stores/index.js";
+import { ref, onMounted } from "vue";
+import { useMainStore } from "../stores/content.js"; // 경로를 content.js로 수정
 import CalendarComponent from "../components/CalendarComponent.vue"; // 캘린더 컴포넌트
 import Nav from "../components/Nav.vue"; // 네비게이션 컴포넌트
 
@@ -78,6 +78,10 @@ const selectedDate = ref(null);
 const content = ref({
     // 예시: 내용이 있는 날짜들
     // '2024-6-1': '6월 1일 내용',
+});
+
+onMounted(() => {
+    store.fetchAllData();
 });
 
 const prevMonth = () => {
