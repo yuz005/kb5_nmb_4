@@ -1,26 +1,52 @@
 <template>
     <div class="daily-summary col-md-4 p-3 border rounded">
         <h2>당일 소비 현황</h2>
-        <textarea
-            v-if="isEditing"
-            v-model="selectedMemo"
-            class="form-control content-input mb-2"
-        ></textarea>
-        <p v-else>{{ selectedMemo }}</p>
-        <div class="buttons d-flex justify-content-end">
-            <button @click="saveContent" class="btn btn-success me-2">
-                저장
-            </button>
-            <button @click="editContent" class="btn btn-warning">수정</button>
+        <div v-if="isEditing">
+            <div v-for="item in filteredContent" :key="item.id" class="mb-3">
+                <div class="form-label">날짜</div>
+                <input
+                    type="date"
+                    v-model="item.datetime"
+                    class="form-control mb-2"
+                />
+                <div class="form-label">금액</div>
+                <input
+                    type="number"
+                    v-model="item.amount"
+                    class="form-control mb-2"
+                    placeholder="금액 입력"
+                />
+                <div class="form-label">메모</div>
+                <textarea
+                    v-model="item.memo"
+                    class="form-control content-input mb-2"
+                    placeholder="메모 입력"
+                ></textarea>
+            </div>
+            <div class="buttons d-flex justify-content-end">
+                <button @click="saveAllContent" class="btn btn-success me-2">
+                    저장
+                </button>
+            </div>
         </div>
-        <div class="mt-3">
-            <span>{{ selectedAmount }}</span>
+        <div v-else>
+            <div v-for="item in filteredContent" :key="item.id" class="mb-3">
+                <div class="form-label">{{ formatDate(item.datetime) }}</div>
+                <p>{{ item.amount }}원</p>
+                <p>{{ item.memo }}</p>
+            </div>
+            <div class="buttons d-flex justify-content-end">
+                <button @click="editContent" class="btn btn-warning">
+                    수정
+                </button>
+            </div>
         </div>
     </div>
 </template>
+
 <script setup>
-import { ref, watch } from "vue";
-import { useMainStore } from "@/stores/content.js";
+import { ref, onMounted, computed, watch } from "vue";
+import { useContentStore } from "@/stores/content.js";
 
 const props = defineProps({
     initialMemo: {
@@ -35,38 +61,64 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    isEditing: Boolean,
     onSave: Function,
+});
+
+const emits = defineEmits(["updateIsEditing"]);
+
+const contentStore = useContentStore();
+const contentList = computed(() => contentStore.contentList);
+const filteredContent = computed(() => {
+    if (!props.selectedDate) return [];
+    const dateStr = `${props.selectedDate.year}-${String(
+        props.selectedDate.month + 1
+    ).padStart(2, "0")}-${String(props.selectedDate.day).padStart(2, "0")}`;
+    return contentList.value.filter((item) =>
+        item.datetime.startsWith(dateStr)
+    );
 });
 
 const selectedMemo = ref(props.initialMemo);
 const selectedAmount = ref(props.initialAmount);
-const isEditing = ref(false);
+
+onMounted(async () => {
+    await contentStore.fetchContent();
+});
 
 watch(
-    () => props.initialMemo,
-    (newVal) => {
-        selectedMemo.value = newVal;
+    () => props.selectedDate,
+    async (newVal) => {
+        if (newVal) {
+            await contentStore.fetchContent();
+        }
     }
 );
 
-watch(
-    () => props.initialAmount,
-    (newVal) => {
-        selectedAmount.value = newVal;
-    }
-);
-
-const saveContent = async () => {
-    isEditing.value = false;
-    if (props.onSave) {
-        await props.onSave(selectedMemo.value, selectedAmount.value);
+const saveAllContent = async () => {
+    emits("updateIsEditing", false);
+    for (const item of filteredContent.value) {
+        if (props.onSave) {
+            const dateStr = new Date(item.datetime).toISOString();
+            await props.onSave(dateStr, item.amount, item.memo);
+        }
     }
 };
 
 const editContent = () => {
-    isEditing.value = true;
+    emits("updateIsEditing", true);
+};
+
+// Format date to "YY-MM-DD"
+const formatDate = (datetime) => {
+    const date = new Date(datetime);
+    const year = String(date.getFullYear()).slice(-2);
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
 };
 </script>
+
 <style scoped>
 .daily-summary {
     flex: 1;
