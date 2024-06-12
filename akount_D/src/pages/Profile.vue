@@ -1,31 +1,31 @@
 <template>
-    <div class="container mt-5">
-        <div class="row col">
-            <h2> 마이페이지 </h2>
+    <div class="container d-flex justify-content-center align-items-start min-vh-100 py-5">
+        <div class="row col-12 col-md-8 col-lg-6">
+            <h2 class="text-center mb-4"> 마이페이지 </h2>
             <form>
-                <div class="mt-4 mb-3">
+                <div class="mb-4 d-flex align-items-center justify-content-center">
                     <div class="d-flex align-items-center">
                         <img src="../assets/profile.png" class="rounded-circle me-3" width="100" height="100"> 
                         <div>                   
-                            <div class="fw-bold">{{ profileStore.state.nickname }}</div>
-                            <div class="text-muted">@ {{ profileStore.state.account_id }}</div> 
+                            <div class="fw-bold">{{ profileStore.profile.nickname }} 님</div>
+                            <div class="text-muted">@ {{ profileStore.profile.account_id }}</div> 
                         </div>
                     </div>                   
                 </div>
                 <div class="mt-3 mb-3">
-                    <label for="nickname" class="form-label">별명</label>
-                    <input type="text" class="form-control" :placeholder="profileStore.state.nickname" v-model="profileStore.state.nickname">
+                    <label for="nickname" style="font-weight: bold" class="form-label">별명</label>
+                    <input type="text" class="form-control" :placeholder="profileStore.profile.nickname" v-model="profileStore.profile.nickname">
                 </div>
                 <div class="mt-3 mb-3">
-                    <label for="email" class="form-label">이메일</label>
-                    <input type="text" class="form-control" :placeholder="profileStore.state.email" v-model="profileStore.state.email">
+                    <label for="email" style="font-weight: bold" class="form-label">이메일</label>
+                    <input type="text" class="form-control" :placeholder="profileStore.profile.email" v-model="profileStore.profile.email">
                 </div>
                 <div class="mt-3 mb-3">
-                    <label for="phone_number" class="form-label">전화번호</label>
-                    <input type="text" class="form-control" :placeholder="profileStore.state.phone_number" v-model="profileStore.state.phone_number">
+                    <label for="phone_number" style="font-weight: bold" class="form-label">전화번호</label>
+                    <input type="text" class="form-control" :placeholder="profileStore.profile.phone_number" v-model="profileStore.profile.phone_number">
                 </div>
                 <div class="d-md-flex justify-content-md-end">
-                    <button type="button" class="btn btn-primary btn-block mt-3" @click="profileStore.saveChanges">변경 사항 저장</button>
+                    <button type="button" class="btn btn-primary btn-block mt-3" @click="saveChanges">변경 사항 저장</button>
                 </div>
             </form>
         </div>
@@ -35,14 +35,22 @@
 
 <script setup>
 import { useRoute } from "vue-router";
-import { reactive, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import axios from 'axios';
-import { useProfileStore } from "@/stores/content.js";
+import { useMainStore } from "@/stores/content.js";
 
 const currentRoute = useRoute();
-const profileStore = useProfileStore();
+const profileStore = useMainStore();
 
 onMounted(() => {
-  profileStore.fetchData();
+  profileStore.fetchProfile();
 });
+
+const saveChanges=()=>{
+    profileStore.setProfile(profileStore.profile);
+}
+
 </script>
+
+
+
