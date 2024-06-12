@@ -10,7 +10,7 @@ export const useMainStore = defineStore("main", () => {
         account_id: "",
         email: "",
         phone_number: "",
-        balance: 0
+        balance: 0,
     });
 
     const transactions = reactive([]);

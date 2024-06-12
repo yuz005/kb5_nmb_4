@@ -50,7 +50,7 @@ const currentMonthDisplay = computed(() => {
     : currentMonth.value.toString();
 });
 
-// 이전 달로 이동
+// 이전 달로 이동합니다.
 const prevMonth = () => {
   if (currentMonth.value === 1) {
     currentMonth.value = 12;
