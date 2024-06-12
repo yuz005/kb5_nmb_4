@@ -15,7 +15,11 @@ onMounted(() => {
 </script>
 
 <template>
-    <li>
-        <span>{{ contents.memo }}</span>
-    </li>
+    <tr>
+        <td><input type="checkbox" /></td>
+        <td>{{ contents.datetime }}</td>
+        <td>{{ contents.category_id }}</td>
+        <td>{{ contents.amount }}</td>
+        <td>{{ contents.memo }}</td>
+    </tr>
 </template>
