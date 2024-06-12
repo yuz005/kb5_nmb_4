@@ -17,13 +17,42 @@ export const useMainStore = defineStore("main", () => {
     const categories = reactive([]);
 
     const fetchProfile = async () => {
+        console.log("Fetching profile...");
         try {
             const response = await axios.get(`${BASEURI}/profile`);
-            Object.assign(profile, response.data);
+        if (response.status === 200) {
+            const profileData = response.data;
+            if (profileData) {
+                console.log("Profile fetched successfully:", profileData);
+                if (profileData[0]) {        //검수
+                    Object.assign(profile, profileData[0]);
+                } 
+            } else {
+                console.error("Profile not found");
+            }
+        } else {
+            console.error("Failed to fetch profile. Status:", response.status);
+        }
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+    }
+}
+
+    const saveProfile = async () => {
+        try {
+            const response = await axios.put(`${BASEURI}/profile/1`, profile);
+            if (response.status === 200) {
+                alert("프로필이 성공적으로 저장되었습니다.");
+            } else {
+                alert("프로필 저장에 실패했습니다.");
+            }
         } catch (error) {
-            console.error("Error fetching profile:", error);
+            console.error("Error saving profile:", error);
+            alert("프로필 저장에 실패했습니다.");
         }
     };
+
+
 
     const fetchTransactions = async () => {
         try {
@@ -53,9 +82,6 @@ export const useMainStore = defineStore("main", () => {
         }
     };
 
-    const setProfile = (newProfile) => {
-        Object.assign(profile, newProfile);
-    };
 
     const addTransaction = (transaction) => {
         transactions.push(transaction);
@@ -70,10 +96,10 @@ export const useMainStore = defineStore("main", () => {
         transactions,
         categories,
         fetchProfile,
+        saveProfile,
         fetchTransactions,
         fetchCategories,
         fetchAllData,
-        setProfile,
         addTransaction,
         updateBalance,
     };
