@@ -1,4 +1,3 @@
-NonthNavigator.vue
 <template>
     <div class="d-flex justify-content-center mb-3">
         <button @click="prevMonth" class="arrow-button" :disabled="isLoading">
