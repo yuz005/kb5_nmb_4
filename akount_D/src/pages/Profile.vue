@@ -57,6 +57,7 @@
 
 <script setup>
 import { useRoute } from "vue-router";
+
 import { reactive, onMounted } from "vue";
 import axios from "axios";
 //import { useProfileStore } from "@/stores/content.js";
@@ -65,6 +66,14 @@ const currentRoute = useRoute();
 //const profileStore = useProfileStore();
 
 onMounted(() => {
-  profileStore.fetchData();
+  profileStore.fetchProfile();
 });
+
+const saveChanges=()=>{
+    profileStore.setProfile(profileStore.profile);
+}
+
 </script>
+
+
+
