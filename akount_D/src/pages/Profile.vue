@@ -49,8 +49,8 @@
   onMounted(async() => {
       await profileStore.fetchProfile();
       nickname.value=profileStore.profile.nickname;
-      email.vaule=profileStore.profile.email;
-      phone_number=profileStore.profile.phone_number;
+      email.value=profileStore.profile.email;
+      phone_number.value=profileStore.profile.phone_number;
   });
   
   

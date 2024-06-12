@@ -22,9 +22,11 @@ export const useMainStore = defineStore("main", () => {
             const response = await axios.get(`${BASEURI}/profile`);
         if (response.status === 200) {
             const profileData = response.data;
-            if (profileData.length > 0) {    //검수
-                console.log("Profile fetched successfully:", profileData[0]);
-                Object.assign(profile, profileData[0]);
+            if (profileData) {
+                console.log("Profile fetched successfully:", profileData);
+                if (profileData[0]) {        //검수
+                    Object.assign(profile, profileData[0]);
+                } 
             } else {
                 console.error("Profile not found");
             }
