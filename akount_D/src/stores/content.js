@@ -5,15 +5,13 @@ import axios from "axios";
 const BASEURI = "http://localhost:3000"; // JSON 서버 주소
 
 export const useMainStore = defineStore("main", () => {
-    // const profile = reactive({
-    //     nickname: "",
-    //     account_id: "",
-    //     email: "",
-    //     phone_number: "",
-    //     balance: 0,
-    // });
-
-    const profile = reactive([]);
+    const profile = reactive({
+        nickname: "",
+        account_id: "",
+        email: "",
+        phone_number: "",
+        balance: 0,
+    });
 
     const transactions = reactive([]);
     const categories = reactive([]);
@@ -24,10 +22,8 @@ export const useMainStore = defineStore("main", () => {
             const response = await axios.get(`${BASEURI}/profile`);
         if (response.status === 200) {
             const profileData = response.data;
-            if (profileData) {
-                console.log("Profile fetched successfully:", profileData);
-                if(profileData[0]) {      // 검수
-                }
+            if (profileData.length > 0) {    //검수
+                console.log("Profile fetched successfully:", profileData[0]);
                 Object.assign(profile, profileData[0]);
             } else {
                 console.error("Profile not found");
@@ -84,9 +80,6 @@ export const useMainStore = defineStore("main", () => {
         }
     };
 
-    // const setProfile = (newProfile) => {
-    //     Object.assign(profile, newProfile);
-    // };
 
     const addTransaction = (transaction) => {
         transactions.push(transaction);
@@ -105,7 +98,6 @@ export const useMainStore = defineStore("main", () => {
         fetchTransactions,
         fetchCategories,
         fetchAllData,
-        // setProfile,
         addTransaction,
         updateBalance,
     };

@@ -14,15 +14,15 @@
                 </div>
                 <div class="mt-3 mb-3">
                     <label for="nickname" style="font-weight: bold" class="form-label">별명</label>
-                    <input type="text" class="form-control" :placeholder="profileStore.profile.nickname" v-model="profileStore.profile.nickname">
+                    <input type="text" class="form-control" :placeholder="profileStore.profile.nickname" v-model="nickname">
                 </div>
                 <div class="mt-3 mb-3">
                     <label for="email" style="font-weight: bold" class="form-label">이메일</label>
-                    <input type="text" class="form-control" :placeholder="profileStore.profile.email" v-model="profileStore.profile.email">
+                    <input type="text" class="form-control" :placeholder="profileStore.profile.email" v-model="email">
                 </div>
                 <div class="mt-3 mb-3">
                     <label for="phone_number" style="font-weight: bold" class="form-label">전화번호</label>
-                    <input type="text" class="form-control" :placeholder="profileStore.profile.phone_number" v-model="profileStore.profile.phone_number">
+                    <input type="text" class="form-control" :placeholder="profileStore.profile.phone_number" v-model="phone_number">
                 </div>
                 <div class="d-md-flex justify-content-md-end">
                     <button type="button" class="btn btn-primary btn-block mt-3" @click="saveChanges">변경 사항 저장</button>
@@ -35,20 +35,30 @@
   
   <script setup>
   import { useRoute } from "vue-router";
-  import { onMounted } from 'vue';
+  import { ref, onMounted } from 'vue';
   import axios from 'axios';
   import { useMainStore } from "@/stores/content.js";
   
   const currentRoute = useRoute();
   const profileStore = useMainStore();
+
+  const nickname = ref('');
+  const email = ref('');
+  const phone_number = ref('');
   
   onMounted(async() => {
       await profileStore.fetchProfile();
+      nickname.value=profileStore.profile.nickname;
+      email.vaule=profileStore.profile.email;
+      phone_number=profileStore.profile.phone_number;
   });
   
   
   
   const saveChanges = async() => {
+    profileStore.profile.nickname=nickname.value;
+    profileStore.profile.email=email.value;
+    profileStore.profile.phone_number=phone_number.value;
     await profileStore.saveProfile();
   }
   

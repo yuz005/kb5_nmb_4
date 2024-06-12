@@ -14,9 +14,10 @@
                     <div class="col-md-8">
                         <div class="card-body">
                             <p class="card-text">
-                                <small class="text-body-secondary"
-                                    >profile 연동</small
-                                >
+                                <div>                   
+                            <div class="fw-bold">{{ profileStore.profile.nickname}} 님</div>
+                            <div class="text-muted">@ {{ profileStore.profile.account_id}}</div> 
+                        </div>
                             </p>
                         </div>
                     </div>
@@ -61,14 +62,24 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
+// import { defineProps } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-const props = defineProps({
-    profileImage: String,
-    profileNickname: String,
-    profileEmail: String,
-});
+import { onMounted } from 'vue';
+import { useMainStore } from "@/stores/content.js";
+
+const profileStore = useMainStore();
+  
+onMounted(async() => {
+      await profileStore.fetchProfile();
+    });
+
+// const props = defineProps({
+//     profileImage: String,
+//     profileNickname: String,
+//     profileEmail: String,
+// });
+
 </script>
 
 <style scoped>
