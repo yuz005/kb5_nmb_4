@@ -1,4 +1,5 @@
 <template>
+
     <div
         class="container d-flex justify-content-center align-items-start min-vh-100 py-5"
     >
@@ -17,10 +18,12 @@
                         />
                         <div>
                             <div class="fw-bold">
+
                                 {{ profileStore.profile.nickname }} 님
                             </div>
                             <div class="text-muted">
                                 @ {{ profileStore.profile.account_id }}
+
                             </div>
                         </div>
                     </div>
@@ -58,20 +61,25 @@
                         for="phone_number"
                         style="font-weight: bold"
                         class="form-label"
+
                         >전화번호</label
                     >
                     <input
                         type="text"
                         class="form-control"
+
                         :placeholder="profileStore.profile.phone_number"
                         v-model="profileStore.profile.phone_number"
+
                     />
                 </div>
                 <div class="d-md-flex justify-content-md-end">
                     <button
                         type="button"
                         class="btn btn-primary btn-block mt-3"
+
                         @click="saveChanges"
+
                     >
                         변경 사항 저장
                     </button>
@@ -83,6 +91,7 @@
 
 <script setup>
 import { useRoute } from "vue-router";
+
 import { onMounted } from "vue";
 import axios from "axios";
 import { useMainStore } from "@/stores/content.js";
@@ -92,6 +101,7 @@ const profileStore = useMainStore();
 
 onMounted(() => {
     profileStore.fetchProfile();
+
 });
 
 const saveChanges = () => {
