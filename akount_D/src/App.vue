@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import { useContentStore } from "@/stores/content.js";
 
@@ -7,7 +7,9 @@ import Nav from "@/components/Nav.vue";
 
 const store = useContentStore();
 const fetchContent = store.fetchContent;
-fetchContent();
+onMounted(() => {
+    fetchContent();
+});
 </script>
 
 <template>

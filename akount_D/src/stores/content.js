@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { reactive, computed } from "vue";
+import { reactive, computed, ref, watch } from "vue";
 import axios from "axios";
 
 const BASEURI = "http://localhost:3000"; // JSON 서버 주소
@@ -17,26 +17,30 @@ export const useMainStore = defineStore("main", () => {
     const categories = reactive([]);
 
     const fetchProfile = async () => {
-        console.log("Fetching profile...");
+        // console.log("Fetching profile...");
         try {
             const response = await axios.get(`${BASEURI}/profile`);
-        if (response.status === 200) {
-            const profileData = response.data;
-            if (profileData) {
-                console.log("Profile fetched successfully:", profileData);
-                if (profileData[0]) {        //검수
-                    Object.assign(profile, profileData[0]);
-                } 
+            if (response.status === 200) {
+                const profileData = response.data;
+                if (profileData) {
+                    // console.log("Profile fetched successfully:", profileData);
+                    if (profileData[0]) {
+                        //검수
+                        Object.assign(profile, profileData[0]);
+                    }
+                } else {
+                    console.error("Profile not found");
+                }
             } else {
-                console.error("Profile not found");
+                console.error(
+                    "Failed to fetch profile. Status:",
+                    response.status
+                );
             }
-        } else {
-            console.error("Failed to fetch profile. Status:", response.status);
+        } catch (error) {
+            console.error("Error fetching profile:", error);
         }
-    } catch (error) {
-        console.error("Error fetching profile:", error);
-    }
-}
+    };
 
     const saveProfile = async () => {
         try {
@@ -51,8 +55,6 @@ export const useMainStore = defineStore("main", () => {
             alert("프로필 저장에 실패했습니다.");
         }
     };
-
-
 
     const fetchTransactions = async () => {
         try {
@@ -82,7 +84,6 @@ export const useMainStore = defineStore("main", () => {
         }
     };
 
-
     const addTransaction = (transaction) => {
         transactions.push(transaction);
     };
@@ -104,24 +105,79 @@ export const useMainStore = defineStore("main", () => {
         updateBalance,
     };
 });
-
 export const useContentStore = defineStore("contentList", () => {
     const state = reactive({ contentList: [] });
+    const currentDate = ref(new Date());
+    const isLoading = ref(false);
 
+    // Inside useContentStore
     const fetchContent = async () => {
+        isLoading.value = true;
         try {
             const response = await axios.get(`${BASEURI}/content`);
             if (response.status === 200) {
-                state.contentList = response.data;
+                // console.log("Data fetched successfully", response.data);
+                state.contentList = response.data || [];
             } else {
+                console.error("Failed to fetch data");
                 alert("데이터 조회 실패");
             }
         } catch (error) {
-            alert("에러발생:" + error);
+            console.error("Error fetching data:", error);
+            alert("에러 발생:" + error);
+        } finally {
+            isLoading.value = false;
         }
     };
 
-    const contentList = computed(() => state.contentList);
+    function removeTimeFromDate(date) {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
 
-    return { state, contentList, fetchContent };
+    const filteredContentList = computed(() => {
+        if (!Array.isArray(state.contentList)) {
+            console.log("contentList is not an array");
+            return [];
+        }
+        const startOfMonth = removeTimeFromDate(
+            new Date(
+                currentDate.value.getFullYear(),
+                currentDate.value.getMonth(),
+                1
+            )
+        );
+        const endOfMonth = removeTimeFromDate(
+            new Date(
+                currentDate.value.getFullYear(),
+                currentDate.value.getMonth() + 1,
+                0
+            )
+        );
+        return state.contentList.filter((item) => {
+            if (!item.datetime) return false;
+            const itemDate = new Date(Date.parse(item.datetime));
+            if (isNaN(itemDate)) {
+                console.log(`Invalid date: ${item.datetime}`);
+                return false;
+            }
+            return itemDate >= startOfMonth && itemDate <= endOfMonth;
+        });
+    });
+    // Ensure watch on currentDate triggers fetchContent
+    watch(currentDate, () => {
+        fetchContent();
+    });
+
+    const updateDate = (newDate) => {
+        currentDate.value = newDate;
+    };
+
+    return {
+        state,
+        fetchContent,
+        filteredContentList,
+        currentDate,
+        updateDate,
+        isLoading,
+    };
 });

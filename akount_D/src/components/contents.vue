@@ -11,11 +11,9 @@ const router = useRouter();
 const contentStore = useContentStore();
 </script>
 <template>
-    <tr>
-        <td><input type="checkbox" /></td>
-        <td>{{ contents.datetime }}</td>
-        <td>{{ contents.category_id }}</td>
-        <td>{{ contents.amount }}</td>
-        <td>{{ contents.memo }}</td>
-    </tr>
+    <td><input type="checkbox" /></td>
+    <td>{{ contents.datetime }}</td>
+    <td>{{ contents.category_id }}</td>
+    <td>{{ contents.amount }}</td>
+    <td>{{ contents.memo }}</td>
 </template>
