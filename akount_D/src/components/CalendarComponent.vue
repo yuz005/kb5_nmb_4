@@ -15,17 +15,23 @@
                 :key="index"
                 class="calendar-day col border p-2"
                 :class="{
-                    'has-content bg-info text-white': hasContent(day),
-                    'selected bg-primary text-white': selectedDay === day,
+                    'has-content bg-info text-white': day && hasContent(day),
+                    'selected bg-primary text-white':
+                        day && selectedDay === day,
                 }"
                 @click="selectDay(day)"
                 @dblclick="handleDoubleClick(day)"
             >
                 <span v-if="day">{{ day }}</span>
+                <!-- Add Bootstrap styling or additional content here -->
+                <div v-if="day && hasContent(day)" class="content-details mt-1">
+                    <span class="badge bg-success">내용 있음</span>
+                </div>
             </div>
         </div>
     </div>
 </template>
+
 <script setup>
 import { ref, watchEffect } from "vue";
 
@@ -43,10 +49,6 @@ const props = defineProps({
         required: true,
     },
 });
-const handleDoubleClick = (day) => {
-    selectDay(day, true);
-    isEditing.value = true; // Enable editing on double click
-};
 
 const emits = defineEmits(["showContent"]);
 
@@ -103,7 +105,12 @@ const selectDay = (day, isDoubleClick = false) => {
         });
     }
 };
+
+const handleDoubleClick = (day) => {
+    selectDay(day, true);
+};
 </script>
+
 <style scoped>
 .calendar {
     display: flex;
@@ -137,12 +144,14 @@ const selectDay = (day, isDoubleClick = false) => {
     min-height: 80px;
     border: 1px solid #ddd;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
     position: relative;
     transition: transform 0.3s ease, background-color 0.3s ease;
     background: white;
     border-radius: 5px;
+    padding: 5px;
 }
 
 .calendar-day:hover {
@@ -171,5 +180,9 @@ const selectDay = (day, isDoubleClick = false) => {
     border-radius: 50%;
     top: 5px;
     right: 5px;
+}
+
+.content-details {
+    margin-top: 5px;
 }
 </style>

@@ -44,38 +44,23 @@
                         @showContent="showContent"
                     />
                 </div>
-                <div class="daily-summary col-md-4 p-3 border rounded">
-                    <h2>당일 소비 현황</h2>
-                    <textarea
-                        v-if="isEditing"
-                        v-model="selectedMemo"
-                        class="form-control content-input mb-2"
-                    ></textarea>
-                    <p v-else>{{ selectedMemo }}</p>
-                    <div class="buttons d-flex justify-content-end">
-                        <button
-                            @click="saveContent"
-                            class="btn btn-success me-2"
-                        >
-                            저장
-                        </button>
-                        <button @click="editContent" class="btn btn-warning">
-                            수정
-                        </button>
-                    </div>
-                    <div class="mt-3">
-                        <span>{{ selectedAmount }}</span>
-                    </div>
-                </div>
+                <Consumption
+                    :initialMemo="selectedMemo"
+                    :initialAmount="selectedAmount"
+                    :selectedDate="selectedDate"
+                    :onSave="saveContent"
+                />
             </div>
         </main>
     </div>
 </template>
+
 <script setup>
 import { ref, onMounted } from "vue";
 import { useMainStore } from "@/stores/content.js";
 import CalendarComponent from "../components/CalendarComponent.vue";
 import Nav from "../components/Nav.vue";
+import Consumption from "../components/Consumption.vue";
 
 const mainStore = useMainStore();
 const profile = mainStore.profile;
@@ -129,7 +114,7 @@ const showContent = ({ year, month, day, isDoubleClick, content }) => {
     }
 };
 
-const saveContent = async () => {
+const saveContent = async (memo, amount) => {
     if (selectedDate.value) {
         const { year, month, day } = selectedDate.value;
         const transactionDate = `${year}-${String(month + 1).padStart(
@@ -140,39 +125,23 @@ const saveContent = async () => {
             t.datetime.startsWith(transactionDate)
         );
         if (transaction) {
-            transaction.memo = selectedMemo.value;
-            transaction.amount = selectedAmount.value;
+            transaction.memo = memo;
+            transaction.amount = amount;
             await mainStore.updateTransaction(transaction);
         } else {
             transaction = {
                 datetime: `${transactionDate}T00:00:00+09:00`,
                 category_id: 0, // 적절한 category_id 설정
-                amount: selectedAmount.value,
-                memo: selectedMemo.value,
+                amount: amount,
+                memo: memo,
             };
             await mainStore.addTransaction(transaction);
             transactions.value.push(transaction); // 트랜잭션 배열을 업데이트하려면 이 행을 추가
         }
-        isEditing.value = false;
-        // 키를 업데이트하거나 반응형 변경을 트리거하여 Calendar Component를 강제로 다시 렌더링합니다
     }
 };
-
-const editContent = () => {
-    isEditing.value = true;
-};
-
-const enableEditing = () => {
-    isEditingYear.value = true;
-    isEditingMonth.value = true;
-};
-
-const disableEditing = () => {
-    isEditingYear.value = false;
-    isEditingMonth.value = false;
-    currentMonth.value = parseInt(currentMonthDisplay.value, 10) - 1;
-};
 </script>
+
 <style scoped>
 .home {
     display: flex;
@@ -187,7 +156,7 @@ const disableEditing = () => {
     align-items: flex-start;
     margin-left: 50px;
     padding-left: 20px;
-    width: calc(300% - 50px);
+    width: calc(100% - 50px);
 }
 
 .header {
