@@ -23,7 +23,6 @@
                 @dblclick="handleDoubleClick(day)"
             >
                 <span v-if="day">{{ day }}</span>
-                <!-- Add Bootstrap styling or additional content here -->
                 <div v-if="day && hasContent(day)" class="content-details mt-1">
                     <span class="badge bg-success">내용 있음</span>
                 </div>

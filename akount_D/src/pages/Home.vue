@@ -48,6 +48,8 @@
                     :initialMemo="selectedMemo"
                     :initialAmount="selectedAmount"
                     :selectedDate="selectedDate"
+                    :isEditing="isEditing"
+                    @updateIsEditing="updateIsEditing"
                     :onSave="saveContent"
                 />
             </div>
@@ -114,30 +116,39 @@ const showContent = ({ year, month, day, isDoubleClick, content }) => {
     }
 };
 
-const saveContent = async (memo, amount) => {
-    if (selectedDate.value) {
-        const { year, month, day } = selectedDate.value;
-        const transactionDate = `${year}-${String(month + 1).padStart(
-            2,
-            "0"
-        )}-${String(day).padStart(2, "0")}`;
-        let transaction = transactions.value.find((t) =>
-            t.datetime.startsWith(transactionDate)
-        );
-        if (transaction) {
-            transaction.memo = memo;
-            transaction.amount = amount;
-            await mainStore.updateTransaction(transaction);
-        } else {
-            transaction = {
-                datetime: `${transactionDate}T00:00:00+09:00`,
-                category_id: 0, // 적절한 category_id 설정
-                amount: amount,
-                memo: memo,
-            };
-            await mainStore.addTransaction(transaction);
-            transactions.value.push(transaction); // 트랜잭션 배열을 업데이트하려면 이 행을 추가
-        }
+const updateIsEditing = (value) => {
+    isEditing.value = value;
+};
+
+const saveContent = async (datetime, amount, memo) => {
+    const [year, month, day] = datetime.split("-");
+    selectedDate.value = {
+        year: parseInt(year),
+        month: parseInt(month) - 1,
+        day: parseInt(day),
+    };
+    let transactionDate = `${year}-${month.padStart(2, "0")}-${day.padStart(
+        2,
+        "0"
+    )}`;
+
+    let transaction = transactions.value.find((t) =>
+        t.datetime.startsWith(transactionDate)
+    );
+
+    if (transaction) {
+        transaction.memo = memo;
+        transaction.amount = amount;
+        await mainStore.updateTransaction(transaction);
+    } else {
+        transaction = {
+            datetime: `${transactionDate}T00:00:00+09:00`,
+            category_id: 0, // 적절한 category_id 설정
+            amount: amount,
+            memo: memo,
+        };
+        await mainStore.addTransaction(transaction);
+        transactions.value.push(transaction); // 트랜잭션 배열을 업데이트하려면 이 행을 추가
     }
 };
 </script>
