@@ -7,8 +7,9 @@ const BASEURI = "http://localhost:3000"; // JSON 서버 주소
 export const useMainStore = defineStore("main", () => {
     const profile = reactive({
         nickname: "",
+        account_id: "",
         email: "",
-        profileImage: "",
+        phone_number: "",
         balance: 0,
     });
 
