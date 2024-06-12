@@ -26,12 +26,118 @@
           </div>
         </div>
       </main>
+      <div class="table-responsive">
+        <div class="row">
+          <div class="col">
+            <table class="table table-hover table-bordered">
+              <thead class="table-dark">
+                <tr>
+                  <th colspan="3">소비</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">분류</th>
+                  <td>카드</td>
+                  <td>현금</td>
+                </tr>
+                <tr>
+                  <th scope="row">식비</th>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">주거/통신</th>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">생활용품</th>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">의복/미용</th>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">건강/문화</th>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">교육/육아</th>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">교통/차량</th>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">경조사/회비</th>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">회비</th>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr class="table-secondary">
+                  <th scope="row">합계</th>
+                  <td colspan="2"></td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="table table-hover table-bordered">
+              <thead class="table-dark">
+                <tr>
+                  <th colspan="3">수입</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">분류</th>
+                  <td>금액</td>
+                </tr>
+                <tr>
+                  <th scope="row">월급</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">용돈</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">이자</th>
+                  <td></td>
+                </tr>
+                <tr class="table-secondary">
+                  <th scope="row">합계</th>
+                  <td>{{ contentList[0].amount }}</td>
+                  <!-- 배열로 가져온 값을 index값으로 분류해서 합산하는 방법 찾기 -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
+import { useContentStore } from "@/stores/content.js";
+import Contents from "@/components/contents.vue";
+
+const contentStore = useContentStore();
+const { fetchContent } = contentStore;
+fetchContent();
+const contentList = computed(() => contentStore.contentList);
 //test
 
 // 현재 날짜를 기준으로 초기값 설정
