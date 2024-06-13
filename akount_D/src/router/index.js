@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useLoadingStore } from "@/stores/loading.js";
 
 import Home from "@/pages/Home.vue";
 import Write from "@/pages/Write.vue";
@@ -16,5 +17,19 @@ const router = createRouter({
         { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
     ],
 });
+
+router.beforeEach((to, from, next) => {
+    const loadingStore = useLoadingStore();
+    loadingStore.startLoading();
+    next();
+});
+
+router.afterEach(() => {
+    const loadingStore = useLoadingStore();
+    setTimeout(() => {
+        loadingStore.stopLoading();
+    }, 1000); // 로딩 애니메이션이 1초간 유지되도록 설정
+});
+
 
 export default router;
