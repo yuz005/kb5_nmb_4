@@ -20,7 +20,6 @@
                         day && selectedDay === day,
                 }"
                 @click="selectDay(day)"
-                @dblclick="handleDoubleClick(day)"
             >
                 <span v-if="day">{{ day }}</span>
                 <div v-if="day && hasContent(day)" class="content-details mt-1">
@@ -32,24 +31,15 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from "vue";
+import { ref, watchEffect, onMounted } from "vue";
 
 const props = defineProps({
-    year: {
-        type: Number,
-        required: true,
-    },
-    month: {
-        type: Number,
-        required: true,
-    },
-    content: {
-        type: Array,
-        required: true,
-    },
+    year: { type: Number, required: true },
+    month: { type: Number, required: true },
+    content: { type: Array, required: true },
 });
 
-const emits = defineEmits(["showContent"]);
+const emits = defineEmits(["showContent", "updateSelectedDate"]);
 
 const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
 const daysInMonth = ref([]);
@@ -72,6 +62,10 @@ const getDaysInMonth = (year, month) => {
     return days;
 };
 
+onMounted(() => {
+    daysInMonth.value = getDaysInMonth(props.year, props.month);
+});
+
 watchEffect(() => {
     daysInMonth.value = getDaysInMonth(props.year, props.month);
 });
@@ -82,31 +76,29 @@ const hasContent = (day) => {
         2,
         "0"
     )}-${String(day).padStart(2, "0")}`;
-    return props.content.some((item) => item.datetime.startsWith(dateStr));
+    return props.content.some(
+        (item) => item.datetime && item.datetime.startsWith(dateStr)
+    );
 };
 
-const selectDay = (day, isDoubleClick = false) => {
+const selectDay = (day) => {
     if (day) {
         selectedDay.value = day;
         const dateStr = `${props.year}-${String(props.month + 1).padStart(
             2,
             "0"
         )}-${String(day).padStart(2, "0")}`;
-        const content = props.content.find((item) =>
-            item.datetime.startsWith(dateStr)
+        const content = props.content.find(
+            (item) => item.datetime && item.datetime.startsWith(dateStr)
         );
         emits("showContent", {
             year: props.year,
             month: props.month,
             day,
-            isDoubleClick,
             content,
         });
+        emits("updateSelectedDate", dateStr);
     }
-};
-
-const handleDoubleClick = (day) => {
-    selectDay(day, true);
 };
 </script>
 
@@ -164,6 +156,7 @@ const handleDoubleClick = (day) => {
 
 .calendar-day.selected {
     background-color: #7710d6;
+    color: white;
 }
 
 .calendar-day span {

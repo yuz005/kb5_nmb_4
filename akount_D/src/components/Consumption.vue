@@ -1,172 +1,82 @@
 <template>
     <div class="daily-summary col-md-4 p-3 border rounded">
-        <h2>당일 소비 현황</h2>
-        <div v-if="isEditing">
-            <div>
-                <div class="form-label">날짜</div>
-                <input
-                    type="date"
-                    v-model="localDate"
-                    class="form-control mb-2"
-                />
-                <div class="form-label">금액</div>
-                <input
-                    type="number"
-                    v-model="localAmount"
-                    class="form-control mb-2"
-                    placeholder="금액 입력"
-                />
-                <div class="form-label">메모</div>
-                <textarea
-                    v-model="localMemo"
-                    class="form-control content-input mb-2"
-                    placeholder="메모 입력"
-                ></textarea>
-                <div class="form-label">카테고리</div>
-                <select v-model="localCategory" class="form-control mb-2">
-                    <option
-                        v-for="category in categories"
-                        :key="category"
-                        :value="category"
-                    >
-                        {{ category }}
-                    </option>
-                </select>
-                <div class="form-label">유형</div>
-                <div>
-                    <label>
-                        <input type="radio" v-model="localType" value="지출" />
-                        지출
-                    </label>
-                    <label>
-                        <input type="radio" v-model="localType" value="수입" />
-                        수입
-                    </label>
-                </div>
+        <h2>오늘의 현황</h2>
+        <div v-if="currentData" class="card p-3">
+            <div class="mb-2">
+                <{{ getExpenseType(currentData.category_id) }}>
             </div>
-            <div class="buttons d-flex justify-content-end">
-                <button @click="saveContent" class="btn btn-success me-2">
-                    저장
-                </button>
-                <button @click="deleteContent" class="btn btn-danger">
-                    삭제
-                </button>
+            <div class="mb-2">{{ formatDate(currentData.datetime) }}</div>
+            <div class="mb-2">{{ currentData.amount }}원</div>
+            <div class="mb-2">{{ currentData.memo }}</div>
+            <div class="mb-2">
+                카테고리: {{ getCategoryTitle(currentData.category_id) }}
+            </div>
+            <div class="mb-2">
+                유형: {{ getPaymentType(currentData.category_id) }}
             </div>
         </div>
-        <div v-else>
-            <div>
-                <div class="form-label">{{ formatDate(selectedDate) }}</div>
-                <p>{{ initialAmount }}원</p>
-                <p>{{ initialMemo }}</p>
-                <p>카테고리: {{ initialCategory }}</p>
-                <p>유형: {{ initialType }}</p>
-            </div>
-            <div class="buttons d-flex justify-content-end">
-                <button @click="editContent" class="btn btn-warning">
-                    수정
-                </button>
-            </div>
+        <div v-else class="card p-3">
+            <div class="mb-2">선택된 날짜에 대한 데이터가 없습니다.</div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
+import axios from "axios";
+
+// db.json 파일 경로 설정
+const dbUrl = "./db.json"; // 실제 경로로 수정
 
 const props = defineProps({
-    initialMemo: {
-        type: String,
-        required: true,
-    },
-    initialAmount: {
-        type: Number,
-        required: true,
-    },
-    initialCategory: {
-        type: String,
-        required: true,
-    },
-    initialType: {
-        type: String,
-        required: true,
-    },
-    selectedDate: {
-        type: String,
-        required: true,
-    },
-    categories: {
-        type: Array,
-        required: true,
-    },
-    isEditing: {
-        type: Boolean,
-        required: true,
-    },
+    selectedDate: { type: String, required: true },
 });
 
-const emits = defineEmits(["updateIsEditing", "saveContent", "deleteContent"]);
+const categories = ref([]);
+const currentData = ref(null);
 
-const localMemo = ref(props.initialMemo);
-const localAmount = ref(props.initialAmount);
-const localCategory = ref(props.initialCategory);
-const localType = ref(props.initialType);
-const localDate = ref(props.selectedDate);
-
-watch(
-    () => props.initialMemo,
-    (newMemo) => {
-        localMemo.value = newMemo;
+const fetchCategories = async () => {
+    try {
+        const response = await axios.get(dbUrl);
+        if (response.status === 200) {
+            categories.value = response.data.category;
+        } else {
+            console.error("Failed to fetch categories");
+        }
+    } catch (error) {
+        console.error("Error fetching categories:", error);
     }
-);
+};
 
-watch(
-    () => props.initialAmount,
-    (newAmount) => {
-        localAmount.value = newAmount;
+const fetchData = async (date) => {
+    try {
+        const response = await axios.get(dbUrl);
+        if (response.status === 200) {
+            const data = response.data.content;
+            currentData.value = data.find((item) =>
+                item.datetime.startsWith(date)
+            );
+        } else {
+            currentData.value = null;
+            console.error("No data found for the selected date");
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        currentData.value = null;
     }
-);
-
-watch(
-    () => props.initialCategory,
-    (newCategory) => {
-        localCategory.value = newCategory;
-    }
-);
-
-watch(
-    () => props.initialType,
-    (newType) => {
-        localType.value = newType;
-    }
-);
+};
 
 watch(
     () => props.selectedDate,
     (newDate) => {
-        localDate.value = newDate;
+        fetchData(newDate);
     }
 );
 
-const saveContent = () => {
-    emits(
-        "saveContent",
-        localDate.value,
-        localAmount.value,
-        localMemo.value,
-        localCategory.value,
-        localType.value
-    );
-    emits("updateIsEditing", false);
-};
-
-const editContent = () => {
-    emits("updateIsEditing", true);
-};
-
-const deleteContent = () => {
-    emits("deleteContent");
-    emits("updateIsEditing", false);
-};
+onMounted(() => {
+    fetchCategories();
+    fetchData(props.selectedDate);
+});
 
 const formatDate = (date) => {
     const d = new Date(date);
@@ -174,6 +84,21 @@ const formatDate = (date) => {
         2,
         "0"
     )}-${String(d.getDate()).padStart(2, "0")}`;
+};
+
+const getCategoryTitle = (categoryId) => {
+    const category = categories.value.find((cat) => cat.id == categoryId);
+    return category ? category.title : "카테고리 없음";
+};
+
+const getPaymentType = (categoryId) => {
+    const category = categories.value.find((cat) => cat.id == categoryId);
+    return category ? (category.is_cash ? "현금" : "카드") : "";
+};
+
+const getExpenseType = (categoryId) => {
+    const category = categories.value.find((cat) => cat.id == categoryId);
+    return category ? (category.is_expense ? "지출" : "수입") : "";
 };
 </script>
 
@@ -185,40 +110,8 @@ const formatDate = (date) => {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
-
 .daily-summary h2 {
     text-align: center;
     margin-bottom: 20px;
-}
-
-.buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-}
-
-.save-button,
-.edit-button,
-.delete-button {
-    font-size: 1rem;
-    padding: 5px 10px;
-    margin-left: 10px;
-    border: none;
-    cursor: pointer;
-}
-
-.save-button {
-    background-color: #4caf50;
-    color: white;
-}
-
-.edit-button {
-    background-color: #ff9800;
-    color: white;
-}
-
-.delete-button {
-    background-color: #dc3545;
-    color: white;
 }
 </style>
