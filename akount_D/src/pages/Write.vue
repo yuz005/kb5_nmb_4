@@ -21,6 +21,7 @@
                                     <th>카테고리</th>
                                     <th>금액</th>
                                     <th>메모</th>
+                                    <th>구분</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -56,7 +57,7 @@
                         <button
                             class="btn btn-secondary"
                             type="button"
-                            @click="showEditForm = !showEditForm"
+                            @click="toggleEditForm"
                             :disabled="!selectedItem"
                         >
                             수정
@@ -72,120 +73,13 @@
                     </div>
                 </div>
                 <!-- Edit Form Modal -->
-                <div v-if="showEditForm && selectedItem" class="modal">
-                    <div class="modal-content d-flex flex-column">
-                        <span class="close" @click="showEditForm = false"
-                            >&times;</span
-                        >
-                        <form @submit.prevent="editData" class="w-100">
-                            <div class="form-group">
-                                <label for="date">날짜:</label>
-                                <input
-                                    type="date"
-                                    v-model="selectedItem.date"
-                                    required
-                                    class="form-control"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="category">카테고리:</label>
-                                <select
-                                    v-model="selectedItem.category_id"
-                                    required
-                                    class="form-control"
-                                >
-                                    <option
-                                        v-for="category in categories"
-                                        :key="category.id"
-                                        :value="category.id"
-                                    >
-                                        {{ category.title }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>지출 여부:</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input
-                                            type="radio"
-                                            id="expense_edit"
-                                            value="true"
-                                            v-model="selectedItem.is_expense"
-                                        />
-                                        <label
-                                            for="expense_edit"
-                                            class="radio-item"
-                                            >지출</label
-                                        >
-                                        <input
-                                            type="radio"
-                                            id="income_edit"
-                                            value="false"
-                                            v-model="selectedItem.is_expense"
-                                        />
-                                        <label
-                                            for="income_edit"
-                                            class="radio-item"
-                                            >수입</label
-                                        >
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>현금 여부:</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input
-                                            type="radio"
-                                            id="cash_edit"
-                                            value="true"
-                                            v-model="selectedItem.is_cash"
-                                        />
-                                        <label
-                                            for="cash_edit"
-                                            class="radio-item"
-                                            >현금</label
-                                        >
-                                        <input
-                                            type="radio"
-                                            id="card_edit"
-                                            value="false"
-                                            v-model="selectedItem.is_cash"
-                                        />
-                                        <label
-                                            for="card_edit"
-                                            class="radio-item"
-                                            >카드</label
-                                        >
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="amount">금액:</label>
-                                <input
-                                    type="number"
-                                    v-model="selectedItem.amount"
-                                    required
-                                    class="form-control"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="memo">메모:</label>
-                                <input
-                                    type="text"
-                                    v-model="selectedItem.memo"
-                                    class="form-control"
-                                />
-                            </div>
-                            <div class="d-flex justify-content-end mt-3">
-                                <button type="submit" class="btn btn-primary">
-                                    수정
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                <EditFormModal
+                    v-if="showEditForm && selectedItem"
+                    :selectedItem="selectedItem"
+                    :categories="categories"
+                    @close="showEditForm = false"
+                    @submit="editData"
+                />
             </div>
         </div>
     </div>
@@ -193,24 +87,21 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from "vue";
-import axios from "axios"; // Import axios
-import Contents from "../components/contents.vue"; // Assuming Contents.vue is in the same directory
-import MonthNavigator from "../components/MonthNavigator.vue"; // Import MonthNavigator component
-import AddButton from "../components/AddButton.vue"; // Import AddButton component
-import { useContentStore } from "@/stores/content.js"; // Adjust the path as necessary
+import axios from "axios";
+import Contents from "../components/contents.vue";
+import MonthNavigator from "../components/MonthNavigator.vue";
+import AddButton from "../components/AddButton.vue";
+import EditFormModal from "../components/EditFormModal.vue";
+import { useContentStore } from "@/stores/content.js";
 
-const BASEURI = "http://localhost:3000"; // Ensure the BASEURI is defined
-
+const BASEURI = "http://localhost:3000";
 const contentStore = useContentStore();
 const currentDate = ref(new Date());
 const isLoading = ref(false);
-const categories = ref([]); // Add categories ref
+const categories = ref([]);
 
 const showEditForm = ref(false);
 const selectedItem = ref(null);
-const selectItem = (item) => {
-    selectedItem.value = { ...item };
-};
 
 const fetchCategories = async () => {
     try {
@@ -223,7 +114,24 @@ const fetchCategories = async () => {
     } catch (error) {
         console.error("Error fetching categories:", error);
     }
-    console.log(categories);
+};
+
+const fetchContent = async () => {
+    isLoading.value = true;
+    try {
+        const response = await axios.get(`${BASEURI}/content`);
+        if (response.status === 200) {
+            contentStore.state.contentList = response.data || [];
+        } else {
+            console.error("Failed to fetch data");
+            alert("데이터 조회 실패");
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        alert("에러 발생:" + error);
+    } finally {
+        isLoading.value = false;
+    }
 };
 
 const editData = async () => {
@@ -272,30 +180,15 @@ const deleteData = async () => {
     }
 };
 
-const fetchContent = async () => {
-    isLoading.value = true;
-    try {
-        const response = await axios.get(`${BASEURI}/content`);
-        if (response.status === 200) {
-            // console.log("Data fetched successfully", response.data);
-            contentStore.state.contentList = response.data || [];
-        } else {
-            console.error("Failed to fetch data");
-            alert("데이터 조회 실패");
-        }
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        alert("에러 발생:" + error);
-    } finally {
-        isLoading.value = false;
-    }
+const selectItem = (item) => {
+    selectedItem.value = { ...item };
+};
+
+const toggleEditForm = () => {
+    showEditForm.value = !showEditForm.value;
 };
 
 const filteredContentList = computed(() => {
-    if (!Array.isArray(contentStore.state.contentList)) {
-        console.log("contentList is not an array");
-        return [];
-    }
     const startOfMonth = removeTimeFromDate(
         new Date(
             currentDate.value.getFullYear(),
@@ -311,12 +204,7 @@ const filteredContentList = computed(() => {
         )
     );
     return contentStore.state.contentList.filter((item) => {
-        if (!item.datetime) return false;
         const itemDate = new Date(Date.parse(item.datetime));
-        if (isNaN(itemDate)) {
-            console.log(`Invalid date: ${item.datetime}`);
-            return false;
-        }
         return itemDate >= startOfMonth && itemDate <= endOfMonth;
     });
 });
@@ -325,18 +213,15 @@ const updateDate = (newDate) => {
     currentDate.value = newDate;
 };
 
-watch(currentDate, () => {
-    fetchContent();
-});
+watch(currentDate, fetchContent);
 
-// Utility function to remove time from date
 function removeTimeFromDate(date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
 onMounted(() => {
     fetchContent();
-    fetchCategories(); // Fetch categories on mount
+    fetchCategories();
 });
 </script>
 

@@ -178,7 +178,9 @@ export default {
 
 <style scoped>
 .modal {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     z-index: 1;
     left: 0;
@@ -199,6 +201,12 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
 }
 .form-group {
     margin-bottom: 1rem;
