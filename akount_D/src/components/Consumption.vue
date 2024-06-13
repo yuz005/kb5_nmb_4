@@ -2,38 +2,64 @@
     <div class="daily-summary col-md-4 p-3 border rounded">
         <h2>당일 소비 현황</h2>
         <div v-if="isEditing">
-            <div v-for="item in filteredContent" :key="item.id" class="mb-3">
+            <div>
                 <div class="form-label">날짜</div>
                 <input
                     type="date"
-                    v-model="item.datetime"
+                    v-model="localDate"
                     class="form-control mb-2"
                 />
                 <div class="form-label">금액</div>
                 <input
                     type="number"
-                    v-model="item.amount"
+                    v-model="localAmount"
                     class="form-control mb-2"
                     placeholder="금액 입력"
                 />
                 <div class="form-label">메모</div>
                 <textarea
-                    v-model="item.memo"
+                    v-model="localMemo"
                     class="form-control content-input mb-2"
                     placeholder="메모 입력"
                 ></textarea>
+                <div class="form-label">카테고리</div>
+                <select v-model="localCategory" class="form-control mb-2">
+                    <option
+                        v-for="category in categories"
+                        :key="category"
+                        :value="category"
+                    >
+                        {{ category }}
+                    </option>
+                </select>
+                <div class="form-label">유형</div>
+                <div>
+                    <label>
+                        <input type="radio" v-model="localType" value="지출" />
+                        지출
+                    </label>
+                    <label>
+                        <input type="radio" v-model="localType" value="수입" />
+                        수입
+                    </label>
+                </div>
             </div>
             <div class="buttons d-flex justify-content-end">
-                <button @click="saveAllContent" class="btn btn-success me-2">
+                <button @click="saveContent" class="btn btn-success me-2">
                     저장
+                </button>
+                <button @click="deleteContent" class="btn btn-danger">
+                    삭제
                 </button>
             </div>
         </div>
         <div v-else>
-            <div v-for="item in filteredContent" :key="item.id" class="mb-3">
-                <div class="form-label">{{ formatDate(item.datetime) }}</div>
-                <p>{{ item.amount }}원</p>
-                <p>{{ item.memo }}</p>
+            <div>
+                <div class="form-label">{{ formatDate(selectedDate) }}</div>
+                <p>{{ initialAmount }}원</p>
+                <p>{{ initialMemo }}</p>
+                <p>카테고리: {{ initialCategory }}</p>
+                <p>유형: {{ initialType }}</p>
             </div>
             <div class="buttons d-flex justify-content-end">
                 <button @click="editContent" class="btn btn-warning">
@@ -45,8 +71,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
-import { useContentStore } from "@/stores/content.js";
+import { ref, watch } from "vue";
 
 const props = defineProps({
     initialMemo: {
@@ -57,65 +82,98 @@ const props = defineProps({
         type: Number,
         required: true,
     },
-    selectedDate: {
-        type: Object,
+    initialCategory: {
+        type: String,
         required: true,
     },
-    isEditing: Boolean,
-    onSave: Function,
+    initialType: {
+        type: String,
+        required: true,
+    },
+    selectedDate: {
+        type: String,
+        required: true,
+    },
+    categories: {
+        type: Array,
+        required: true,
+    },
+    isEditing: {
+        type: Boolean,
+        required: true,
+    },
 });
 
-const emits = defineEmits(["updateIsEditing"]);
+const emits = defineEmits(["updateIsEditing", "saveContent", "deleteContent"]);
 
-const contentStore = useContentStore();
-const contentList = computed(() => contentStore.contentList);
-const filteredContent = computed(() => {
-    if (!props.selectedDate) return [];
-    const dateStr = `${props.selectedDate.year}-${String(
-        props.selectedDate.month + 1
-    ).padStart(2, "0")}-${String(props.selectedDate.day).padStart(2, "0")}`;
-    return contentList.value.filter((item) =>
-        item.datetime.startsWith(dateStr)
-    );
-});
-
-const selectedMemo = ref(props.initialMemo);
-const selectedAmount = ref(props.initialAmount);
-
-onMounted(async () => {
-    await contentStore.fetchContent();
-});
+const localMemo = ref(props.initialMemo);
+const localAmount = ref(props.initialAmount);
+const localCategory = ref(props.initialCategory);
+const localType = ref(props.initialType);
+const localDate = ref(props.selectedDate);
 
 watch(
-    () => props.selectedDate,
-    async (newVal) => {
-        if (newVal) {
-            await contentStore.fetchContent();
-        }
+    () => props.initialMemo,
+    (newMemo) => {
+        localMemo.value = newMemo;
     }
 );
 
-const saveAllContent = async () => {
-    emits("updateIsEditing", false);
-    for (const item of filteredContent.value) {
-        if (props.onSave) {
-            const dateStr = new Date(item.datetime).toISOString();
-            await props.onSave(dateStr, item.amount, item.memo);
-        }
+watch(
+    () => props.initialAmount,
+    (newAmount) => {
+        localAmount.value = newAmount;
     }
+);
+
+watch(
+    () => props.initialCategory,
+    (newCategory) => {
+        localCategory.value = newCategory;
+    }
+);
+
+watch(
+    () => props.initialType,
+    (newType) => {
+        localType.value = newType;
+    }
+);
+
+watch(
+    () => props.selectedDate,
+    (newDate) => {
+        localDate.value = newDate;
+    }
+);
+
+const saveContent = () => {
+    emits(
+        "saveContent",
+        localDate.value,
+        localAmount.value,
+        localMemo.value,
+        localCategory.value,
+        localType.value
+    );
+    emits("updateIsEditing", false);
 };
 
 const editContent = () => {
     emits("updateIsEditing", true);
 };
 
-// Format date to "YY-MM-DD"
-const formatDate = (datetime) => {
-    const date = new Date(datetime);
-    const year = String(date.getFullYear()).slice(-2);
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+const deleteContent = () => {
+    emits("deleteContent");
+    emits("updateIsEditing", false);
+};
+
+const formatDate = (date) => {
+    const d = new Date(date);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+        2,
+        "0"
+    )}-${String(d.getDate()).padStart(2, "0")}`;
 };
 </script>
 
@@ -140,7 +198,8 @@ const formatDate = (datetime) => {
 }
 
 .save-button,
-.edit-button {
+.edit-button,
+.delete-button {
     font-size: 1rem;
     padding: 5px 10px;
     margin-left: 10px;
@@ -155,6 +214,11 @@ const formatDate = (datetime) => {
 
 .edit-button {
     background-color: #ff9800;
+    color: white;
+}
+
+.delete-button {
+    background-color: #dc3545;
     color: white;
 }
 </style>

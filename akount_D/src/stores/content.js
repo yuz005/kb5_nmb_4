@@ -17,15 +17,12 @@ export const useMainStore = defineStore("main", () => {
     const categories = reactive([]);
 
     const fetchProfile = async () => {
-        // console.log("Fetching profile...");
         try {
             const response = await axios.get(`${BASEURI}/profile`);
             if (response.status === 200) {
                 const profileData = response.data;
                 if (profileData) {
-                    // console.log("Profile fetched successfully:", profileData);
                     if (profileData[0]) {
-                        //검수
                         Object.assign(profile, profileData[0]);
                     }
                 } else {
@@ -105,18 +102,17 @@ export const useMainStore = defineStore("main", () => {
         updateBalance,
     };
 });
+
 export const useContentStore = defineStore("contentList", () => {
     const state = reactive({ contentList: [] });
     const currentDate = ref(new Date());
     const isLoading = ref(false);
 
-    // Inside useContentStore
     const fetchContent = async () => {
         isLoading.value = true;
         try {
             const response = await axios.get(`${BASEURI}/content`);
             if (response.status === 200) {
-                // console.log("Data fetched successfully", response.data);
                 state.contentList = response.data || [];
             } else {
                 console.error("Failed to fetch data");
@@ -130,13 +126,33 @@ export const useContentStore = defineStore("contentList", () => {
         }
     };
 
+    const saveContent = async (date, amount, memo) => {
+        try {
+            await axios.post(`${BASEURI}/content`, { date, amount, memo });
+            fetchContent();
+        } catch (error) {
+            console.error("Error saving content:", error);
+            alert("에러 발생:" + error);
+        }
+    };
+
+    const deleteContent = async (id) => {
+        try {
+            await axios.delete(`${BASEURI}/content/${id}`);
+            fetchContent();
+        } catch (error) {
+            console.error("Error deleting content:", error);
+            alert("에러 발생:" + error);
+        }
+    };
+
     function removeTimeFromDate(date) {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate());
     }
 
     const filteredContentList = computed(() => {
         if (!Array.isArray(state.contentList)) {
-            console.log("contentList is not an array");
+            // console.log("contentList is not an array");
             return [];
         }
         const startOfMonth = removeTimeFromDate(
@@ -163,7 +179,7 @@ export const useContentStore = defineStore("contentList", () => {
             return itemDate >= startOfMonth && itemDate <= endOfMonth;
         });
     });
-    // Ensure watch on currentDate triggers fetchContent
+
     watch(currentDate, () => {
         fetchContent();
     });
@@ -175,6 +191,8 @@ export const useContentStore = defineStore("contentList", () => {
     return {
         state,
         fetchContent,
+        saveContent,
+        deleteContent,
         filteredContentList,
         currentDate,
         updateDate,
