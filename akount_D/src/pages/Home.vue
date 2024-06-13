@@ -3,7 +3,8 @@
         <MonthNavigator
             :currentDate="currentDate"
             :isLoading="isLoading"
-            @updateDate="updateDate" class="mt-5"
+            @updateDate="updateDate"
+            class="mt-5"
         />
         <div class="content-wrapper mt-5">
             <div class="main-content">
@@ -140,30 +141,5 @@ onMounted(() => {
 .daily-summary h2 {
     text-align: center;
     margin-bottom: 20px;
-}
-
-.buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-}
-
-.save-button,
-.edit-button {
-    font-size: 1rem;
-    padding: 5px 10px;
-    margin-left: 10px;
-    border: none;
-    cursor: pointer;
-}
-
-.save-button {
-    background-color: #4caf50;
-    color: white;
-}
-
-.edit-button {
-    background-color: #ff9800;
-    color: white;
 }
 </style>
