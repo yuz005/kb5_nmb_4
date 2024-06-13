@@ -104,7 +104,7 @@ export const useMainStore = defineStore("main", () => {
 });
 
 export const useContentStore = defineStore("contentList", () => {
-    const state = reactive({ contentList: [], categories: [] });
+    const state = reactive({ contentList: [] });
     const currentDate = ref(new Date());
     const isLoading = ref(false);
 
@@ -121,21 +121,6 @@ export const useContentStore = defineStore("contentList", () => {
         } catch (error) {
             console.error("Error fetching data:", error);
             alert("에러 발생:" + error);
-        } finally {
-            isLoading.value = false;
-        }
-    };
-    const fetchCategories = async () => {
-        isLoading.value = true;
-        try {
-            const response = await axios.get("http://localhost:3000/category");
-            if (response.status === 200) {
-                state.categories = response.data || [];
-            } else {
-                console.error("Failed to fetch categories");
-            }
-        } catch (error) {
-            console.error("Error fetching categories:", error);
         } finally {
             isLoading.value = false;
         }
@@ -206,7 +191,6 @@ export const useContentStore = defineStore("contentList", () => {
     return {
         state,
         fetchContent,
-        fetchCategories,
         saveContent,
         deleteContent,
         filteredContentList,

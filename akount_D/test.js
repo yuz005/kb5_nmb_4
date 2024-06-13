@@ -3,108 +3,11 @@ import { reactive, computed, ref, watch } from "vue";
 import axios from "axios";
 
 const BASEURI = "http://localhost:3000"; // JSON 서버 주소
-
-export const useMainStore = defineStore("main", () => {
-    const profile = reactive({
-        nickname: "",
-        account_id: "",
-        email: "",
-        phone_number: "",
-        balance: 0,
-    });
-
-    const transactions = reactive([]);
-    const categories = reactive([]);
-
-    const fetchProfile = async () => {
-        try {
-            const response = await axios.get(`${BASEURI}/profile`);
-            if (response.status === 200) {
-                const profileData = response.data;
-                if (profileData) {
-                    if (profileData[0]) {
-                        Object.assign(profile, profileData[0]);
-                    }
-                } else {
-                    console.error("Profile not found");
-                }
-            } else {
-                console.error(
-                    "Failed to fetch profile. Status:",
-                    response.status
-                );
-            }
-        } catch (error) {
-            console.error("Error fetching profile:", error);
-        }
-    };
-
-    const saveProfile = async () => {
-        try {
-            const response = await axios.put(`${BASEURI}/profile/1`, profile);
-            if (response.status === 200) {
-                alert("프로필이 성공적으로 저장되었습니다.");
-            } else {
-                alert("프로필 저장에 실패했습니다.");
-            }
-        } catch (error) {
-            console.error("Error saving profile:", error);
-            alert("프로필 저장에 실패했습니다.");
-        }
-    };
-
-    const fetchTransactions = async () => {
-        try {
-            const response = await axios.get(`${BASEURI}/transactions`);
-            transactions.splice(0, transactions.length, ...response.data);
-        } catch (error) {
-            console.error("Error fetching transactions:", error);
-        }
-    };
-
-    const fetchCategories = async () => {
-        try {
-            const response = await axios.get(`${BASEURI}/categories`);
-            categories.splice(0, categories.length, ...response.data);
-        } catch (error) {
-            console.error("Error fetching categories:", error);
-        }
-    };
-
-    const fetchAllData = async () => {
-        try {
-            await fetchProfile();
-            await fetchTransactions();
-            await fetchCategories();
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
-
-    const addTransaction = (transaction) => {
-        transactions.push(transaction);
-    };
-
-    const updateBalance = (amount) => {
-        profile.balance += amount;
-    };
-
-    return {
-        profile,
-        transactions,
-        categories,
-        fetchProfile,
-        saveProfile,
-        fetchTransactions,
-        fetchCategories,
-        fetchAllData,
-        addTransaction,
-        updateBalance,
-    };
-});
-
 export const useContentStore = defineStore("contentList", () => {
-    const state = reactive({ contentList: [], categories: [] });
+    const state = reactive({
+        contentList: [],
+        categories: [], // categories 상태 추가
+    });
     const currentDate = ref(new Date());
     const isLoading = ref(false);
 
@@ -125,10 +28,11 @@ export const useContentStore = defineStore("contentList", () => {
             isLoading.value = false;
         }
     };
+
     const fetchCategories = async () => {
         isLoading.value = true;
         try {
-            const response = await axios.get("http://localhost:3000/category");
+            const response = await axios.get(`${BASEURI}/category`);
             if (response.status === 200) {
                 state.categories = response.data || [];
             } else {
@@ -167,7 +71,6 @@ export const useContentStore = defineStore("contentList", () => {
 
     const filteredContentList = computed(() => {
         if (!Array.isArray(state.contentList)) {
-            // console.log("contentList is not an array");
             return [];
         }
         const startOfMonth = removeTimeFromDate(
