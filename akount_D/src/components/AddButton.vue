@@ -1,7 +1,7 @@
 <!-- AddButton.vue -->
 <template>
     <div>
-        <button class="btn btn-secondary" type="button" @click="toggleForm">
+        <button class="btn btn-primary" type="button" @click="toggleForm">
             추가
         </button>
 
@@ -188,6 +188,7 @@ export default {
     width: 100%;
     height: 100%;
     overflow: auto;
+    color: black;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
 }
@@ -201,6 +202,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: black;
 }
 .close {
     color: #aaa;

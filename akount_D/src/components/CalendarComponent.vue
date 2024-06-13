@@ -151,7 +151,7 @@ const selectDay = (day) => {
 }
 
 .calendar-day.has-content {
-    background-color: #1bddf7;
+    background-color: #9ad8e0;
 }
 
 .calendar-day.selected {
