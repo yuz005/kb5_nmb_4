@@ -3,7 +3,7 @@
         <button @click="prevMonth" class="arrow-button" :disabled="isLoading">
             ←
         </button>
-        <span class="mx-3">{{ currentMonthLabel }}</span>
+        <span class="mx-3 fw-bold" style="font-size:20pt">{{ currentMonthLabel }}</span>
         <button @click="nextMonth" class="arrow-button" :disabled="isLoading">
             →
         </button>
@@ -54,6 +54,7 @@ const nextMonth = () => {
 .arrow-button {
     background: none;
     border: none;
+    color: white;
     font-size: 24px;
     cursor: pointer;
 }

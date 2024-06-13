@@ -27,7 +27,7 @@ const isLoading = computed(() => loadingStore.isLoading);
 }
 
 .animated-image {
-  max-width: 10%; /* 이미지 크기를 현재의 50%로 줄임 */
+  max-width: 5%; /* 이미지 크기를 현재의 50%로 줄임 */
   animation: moveSideToSide 1s infinite alternate;
 }
 
