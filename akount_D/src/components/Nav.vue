@@ -57,6 +57,11 @@
                     </li>
                 </ul>
             </div>
+            <div class="fixed-bottom">
+            <AddButton 
+                            :categories="categories"
+                            @data-added="fetchContent"
+                        /></div>
         </nav>
     </div>
 </template>
@@ -68,6 +73,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { onMounted } from 'vue';
 import { useMainStore } from "@/stores/content.js";
 
+import AddButton from "../components/AddButton.vue"; // Import AddButton component
 const profileStore = useMainStore();
   
 onMounted(async() => {

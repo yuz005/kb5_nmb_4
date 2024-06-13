@@ -172,15 +172,9 @@ const handleUpdateDate = (newDate) => {
     updateTotal(); // 날짜가 변경될 때 합계를 업데이트
 };
 
-// 날짜로부터 시간을 제거하는 함수
-const removeTimeFromDate = (date) => {
-    date.setHours(0, 0, 0, 0);
-    return date;
-};
-
 // 특정 카테고리와 유형에 대한 합계 계산
 const calculateTotal = (title, isExpense, isCash) => {
-    return filteredContentList.value
+    return contentList.value
         .filter((item) => {
             const category = contentStore.state.categories.find(
                 (cat) => cat.id === item.category_id
@@ -195,32 +189,10 @@ const calculateTotal = (title, isExpense, isCash) => {
         .reduce((total, item) => total + item.amount, 0);
 };
 
-// 특정 월에 해당하는 콘텐츠 리스트 필터링
-const filteredContentList = computed(() => {
-    const startOfMonth = removeTimeFromDate(
-        new Date(
-            currentDate.value.getFullYear(),
-            currentDate.value.getMonth(),
-            1
-        )
-    );
-    const endOfMonth = removeTimeFromDate(
-        new Date(
-            currentDate.value.getFullYear(),
-            currentDate.value.getMonth() + 1,
-            0
-        )
-    );
-    return contentStore.state.contentList.filter((item) => {
-        const itemDate = new Date(Date.parse(item.datetime));
-        return itemDate >= startOfMonth && itemDate <= endOfMonth;
-    });
-});
-
 // 카테고리 합계 계산
 const calculateCategoryTotals = (isExpense, isCash) => {
     const totals = {};
-    filteredContentList.value.forEach((item) => {
+    contentList.value.forEach((item) => {
         if (
             item.is_expense === isExpense &&
             (isCash === null || item.is_cash === isCash)
