@@ -36,6 +36,12 @@
                                     v-else
                                     v-for="item in filteredContentList"
                                     :key="item.id"
+                                    @click="selectItem(item)"
+                                    :class="{
+                                        'selected-row':
+                                            selectedItem &&
+                                            selectedItem.id === item.id,
+                                    }"
                                 >
                                     <Contents :contents="item" />
                                 </tr>
@@ -50,8 +56,22 @@
                         >
                             추가
                         </button>
-                        <button class="btn btn-secondary">수정</button>
-                        <button class="btn btn-secondary">삭제</button>
+                        <button
+                            class="btn btn-secondary"
+                            type="button"
+                            @click="showEditForm = !showEditForm"
+                            :disabled="!selectedItem"
+                        >
+                            수정
+                        </button>
+                        <button
+                            class="btn btn-secondary"
+                            type="button"
+                            @click="deleteData"
+                            :disabled="!selectedItem"
+                        >
+                            삭제
+                        </button>
                     </div>
                 </div>
                 <!-- Add Form Modal -->
@@ -149,11 +169,105 @@
                         </form>
                     </div>
                 </div>
+                <!-- Edit Form Modal -->
+                <div v-if="showEditForm && selectedItem" class="modal">
+                    <div class="modal-content d-flex flex-column">
+                        <span class="close" @click="showEditForm = false"
+                            >&times;</span
+                        >
+                        <form @submit.prevent="editData" class="w-100">
+                            <div class="form-group">
+                                <label for="date">날짜:</label>
+                                <input
+                                    type="date"
+                                    v-model="selectedItem.date"
+                                    required
+                                    class="form-control"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="category">카테고리:</label>
+                                <select
+                                    v-model="selectedItem.category_id"
+                                    required
+                                    class="form-control"
+                                >
+                                    <option
+                                        v-for="category in categories"
+                                        :key="category.id"
+                                        :value="category.id"
+                                    >
+                                        {{ category.title }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>지출 여부:</label>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="expense_edit"
+                                        value="true"
+                                        v-model="selectedItem.is_expense"
+                                    />
+                                    <label for="expense_edit">지출</label>
+                                    <input
+                                        type="radio"
+                                        id="income_edit"
+                                        value="false"
+                                        v-model="selectedItem.is_expense"
+                                    />
+                                    <label for="income_edit">수입</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>현금 여부:</label>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="cash_edit"
+                                        value="true"
+                                        v-model="selectedItem.is_cash"
+                                    />
+                                    <label for="cash_edit">현금</label>
+                                    <input
+                                        type="radio"
+                                        id="card_edit"
+                                        value="false"
+                                        v-model="selectedItem.is_cash"
+                                    />
+                                    <label for="card_edit">카드</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="amount">금액:</label>
+                                <input
+                                    type="number"
+                                    v-model="selectedItem.amount"
+                                    required
+                                    class="form-control"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="memo">메모:</label>
+                                <input
+                                    type="text"
+                                    v-model="selectedItem.memo"
+                                    class="form-control"
+                                />
+                            </div>
+                            <div class="d-flex justify-content-end mt-3">
+                                <button type="submit" class="btn btn-primary">
+                                    수정
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
-
 <script setup>
 import { ref, computed, watch, onMounted } from "vue";
 import axios from "axios"; // Import axios
@@ -169,6 +283,12 @@ const isLoading = ref(false);
 const categories = ref([]); // Add categories ref
 
 const showAddForm = ref(false);
+const showEditForm = ref(false);
+const selectedItem = ref(null);
+const selectItem = (item) => {
+    selectedItem.value = { ...item };
+};
+
 const newData = ref({
     date: "",
     category_id: "",
@@ -212,6 +332,52 @@ const addData = async () => {
     } catch (error) {
         console.error("Error adding data:", error);
         alert("데이터 추가 중 에러 발생:" + error);
+    }
+};
+
+const editData = async () => {
+    try {
+        const response = await axios.put(
+            `${BASEURI}/content/${selectedItem.value.id}`,
+            {
+                datetime: selectedItem.value.date,
+                category_id: selectedItem.value.category_id,
+                is_expense: selectedItem.value.is_expense === "true",
+                is_cash: selectedItem.value.is_cash === "true",
+                amount: selectedItem.value.amount,
+                memo: selectedItem.value.memo,
+            }
+        );
+        if (response.status === 200) {
+            alert("데이터가 성공적으로 수정되었습니다.");
+            fetchContent();
+            showEditForm.value = false;
+            selectedItem.value = null;
+        } else {
+            alert("데이터 수정에 실패했습니다.");
+        }
+    } catch (error) {
+        console.error("Error editing data:", error);
+        alert("데이터 수정 중 에러 발생:" + error);
+    }
+};
+
+const deleteData = async () => {
+    if (!selectedItem.value) return;
+    try {
+        const response = await axios.delete(
+            `${BASEURI}/content/${selectedItem.value.id}`
+        );
+        if (response.status === 200) {
+            alert("데이터가 성공적으로 삭제되었습니다.");
+            fetchContent();
+            selectedItem.value = null;
+        } else {
+            alert("데이터 삭제에 실패했습니다.");
+        }
+    } catch (error) {
+        console.error("Error deleting data:", error);
+        alert("데이터 삭제 중 에러 발생:" + error);
     }
 };
 
@@ -364,5 +530,11 @@ th {
 .close:focus {
     color: black;
     text-decoration: none;
+}
+.selected-row {
+    background-color: #e0f7fa; /* 원하는 배경색으로 변경하세요 */
+}
+.selected-row {
+    background-color: #e0f7fa; /* 원하는 배경색으로 변경하세요 */
 }
 </style>

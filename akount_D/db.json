@@ -3,60 +3,60 @@
     {
       "id": "1",
       "datetime": "2024-06-01T00:00:00+09:00",
-      "category_id": 101,
+      "category_id": "101",
       "amount": 3000000,
       "memo": "6월 급여"
     },
     {
       "id": "2",
       "datetime": "2024-06-02T00:00:00+09:00",
-      "category_id": 102,
+      "category_id": "102",
       "amount": 500000,
       "memo": "이자"
     },
     {
       "id": "3",
       "datetime": "2024-06-03T00:00:00+09:00",
-      "category_id": 103,
+      "category_id": "103",
       "amount": 12000,
       "memo": "용돈"
     },
     {
       "id": "4",
       "datetime": "2024-06-04T00:00:00+09:00",
-      "category_id": 201,
+      "category_id": "201",
       "amount": 12000,
       "memo": "회사 점심"
     },
     {
       "id": "5",
       "datetime": "2024-06-05T00:00:00+09:00",
-      "category_id": 207,
+      "category_id": "207",
       "amount": 68000,
       "memo": "6월 교통비"
     },
     {
       "id": "6",
       "datetime": "2024-06-06T00:00:00+09:00",
-      "category_id": 203,
+      "category_id": "203",
       "amount": 92000,
       "memo": "다이소 구매"
     },
     {
       "id": "7",
       "datetime": "2024-06-07T00:00:00+09:00",
-      "category_id": 214,
+      "category_id": "214",
       "amount": 192000,
       "memo": "이발비"
     },
     {
-      "id": "8dd8",
-      "datetime": "2024-06-19",
+      "datetime": "2024-06-27",
       "category_id": "201",
       "is_expense": false,
-      "is_cash": true,
+      "is_cash": false,
       "amount": 6500,
-      "memo": "test"
+      "memo": "점심값_ 수정",
+      "id": "b661"
     }
   ],
   "category": [
