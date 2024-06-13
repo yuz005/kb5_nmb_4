@@ -1,8 +1,8 @@
 <template>
-    <div class="container d-flex">
+    <div class="container mt-5">
         <div class="row">
             <div class="columns">
-                <p>거래 내역</p>
+                <h2>소비 현황</h2>
                 <MonthNavigator
                     :currentDate="currentDate"
                     :isLoading="isLoading"

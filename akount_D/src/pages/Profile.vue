@@ -1,14 +1,14 @@
 <template>
-    <div class="container d-flex justify-content-center align-items-start min-vh-100 py-5">
-        <div class="row col-12 col-md-8 col-lg-6">
-            <h2 class="text-center mb-4"> 마이페이지 </h2>
+    <div class="container mt-5">
+        <div class="row">
+            <h2 style="text-align:left"> 마이페이지 </h2>
             <form>
                 <div class="mb-4 d-flex align-items-center justify-content-center">
                     <div class="d-flex align-items-center">
                         <img src="../assets/profile.png" class="rounded-circle me-3" width="100" height="100"> 
                         <div>                   
                             <div class="fw-bold">{{ profileStore.profile.nickname }} 님</div>
-                            <div class="text-muted">@ {{ profileStore.profile.account_id }}</div> 
+                            <div style="text-decoration:grey">@ {{ profileStore.profile.account_id }}</div> 
                         </div>
                     </div>                   
                 </div>
@@ -25,7 +25,7 @@
                     <input type="text" class="form-control" :placeholder="profileStore.profile.phone_number" v-model="phone_number">
                 </div>
                 <div class="d-md-flex justify-content-md-end">
-                    <button type="button" class="btn btn-primary btn-block mt-3" @click="saveChanges">변경 사항 저장</button>
+                    <button type="button" class="btn btn-primary btn-success mt-3" @click="saveChanges">변경 사항 저장</button>
                 </div>
             </form>
         </div>

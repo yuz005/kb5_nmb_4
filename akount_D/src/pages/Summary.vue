@@ -1,8 +1,8 @@
 <template>
-    <div class="container">
+    <div class="container mt-4">
         <div class="row">
             <div class="columns">
-                <h2>소비 요약</h2>
+                <h2 style="text-align:left">소비 요약</h2>
             </div>
             <main class="main-content">
                 <div class="header">
