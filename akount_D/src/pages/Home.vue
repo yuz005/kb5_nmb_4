@@ -1,16 +1,11 @@
 <template>
     <div class="home">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#" @click.prevent="goHome"
-                >지갑 탐정</a
-            >
-        </nav>
         <MonthNavigator
             :currentDate="currentDate"
             :isLoading="isLoading"
-            @updateDate="updateDate"
+            @updateDate="updateDate" class="mt-5"
         />
-        <div class="content-wrapper">
+        <div class="content-wrapper mt-5">
             <div class="main-content">
                 <CalendarComponent
                     :year="currentDate.getFullYear()"
