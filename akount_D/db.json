@@ -20,7 +20,7 @@
     },
     {
       "id": "3",
-      "datetime": "2024-06-03T00:00:00+09:00",
+      "datetime": "2024-06-03",
       "category_id": "103",
       "is_expense": false,
       "is_cash": true,
@@ -29,7 +29,7 @@
     },
     {
       "id": "4",
-      "datetime": "2024-06-04T00:00:00+09:00",
+      "datetime": "2024-06-04",
       "category_id": "201",
       "is_expense": true,
       "is_cash": false,
@@ -38,7 +38,7 @@
     },
     {
       "id": "5",
-      "datetime": "2024-06-05T00:00:00+09:00",
+      "datetime": "2024-06-05",
       "category_id": "207",
       "is_expense": true,
       "is_cash": false,
@@ -47,7 +47,7 @@
     },
     {
       "id": "6",
-      "datetime": "2024-06-06T00:00:00+09:00",
+      "datetime": "2024-06-06",
       "category_id": "203",
       "is_expense": true,
       "is_cash": false,
@@ -56,7 +56,7 @@
     },
     {
       "id": "7",
-      "datetime": "2024-06-07T00:00:00+09:00",
+      "datetime": "2024-06-07",
       "category_id": "214",
       "is_expense": true,
       "is_cash": true,
@@ -80,6 +80,60 @@
       "is_cash": false,
       "amount": 5000000,
       "memo": "test"
+    },
+    {
+      "id": "9c41",
+      "datetime": "2024-06-01",
+      "category_id": "202",
+      "is_expense": true,
+      "is_cash": true,
+      "amount": 5000,
+      "memo": "빠른 추가 test"
+    },
+    {
+      "id": "183f",
+      "datetime": "2024-06-15",
+      "category_id": "212",
+      "is_expense": true,
+      "is_cash": true,
+      "amount": 2000,
+      "memo": "test"
+    },
+    {
+      "id": "6509",
+      "datetime": "2024-05-07",
+      "category_id": "217",
+      "is_expense": true,
+      "is_cash": true,
+      "amount": 500,
+      "memo": "testing"
+    },
+    {
+      "id": "8196",
+      "datetime": "2024-05-28",
+      "category_id": "208",
+      "is_expense": false,
+      "is_cash": true,
+      "amount": 5000000,
+      "memo": "reset test"
+    },
+    {
+      "id": "a6f7",
+      "datetime": "2024-05-28",
+      "category_id": "216",
+      "is_expense": false,
+      "is_cash": true,
+      "amount": 3000,
+      "memo": "ㅅㄷㄴㅅ"
+    },
+    {
+      "id": "f210",
+      "datetime": "2024-06-01",
+      "category_id": "212",
+      "is_expense": true,
+      "is_cash": true,
+      "amount": 4000,
+      "memo": "test10"
     }
   ],
   "category": [

@@ -15,13 +15,13 @@
                     <div class="col">
                         <table>
                             <thead>
-                                <tr>
+                                <tr class="table-info">
                                     <th></th>
                                     <th>날짜</th>
                                     <th>카테고리</th>
                                     <th>금액</th>
                                     <th>메모</th>
-                                    <th>구분</th>
+                                    <!-- <th>구분</th> -->
                                 </tr>
                             </thead>
                             <tbody>
