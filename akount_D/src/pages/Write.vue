@@ -2,7 +2,7 @@
     <div class="container d-flex">
         <div class="row">
             <div class="columns">
-                <p>소비 현황</p>
+                <p>거래 내역</p>
                 <MonthNavigator
                     :currentDate="currentDate"
                     :isLoading="isLoading"
@@ -49,13 +49,10 @@
                         </table>
                     </div>
                     <div class="button-group d-flex justify-content-end mt-3">
-                        <button
-                            class="btn btn-secondary"
-                            type="button"
-                            @click="showAddForm = !showAddForm"
-                        >
-                            추가
-                        </button>
+                        <AddButton
+                            :categories="categories"
+                            @data-added="fetchContent"
+                        />
                         <button
                             class="btn btn-secondary"
                             type="button"
@@ -72,113 +69,6 @@
                         >
                             삭제
                         </button>
-                    </div>
-                </div>
-                <!-- Add Form Modal -->
-                <div v-if="showAddForm" class="modal">
-                    <div class="modal-content d-flex flex-column">
-                        <span class="close" @click="showAddForm = false"
-                            >&times;</span
-                        >
-                        <form @submit.prevent="addData" class="w-100">
-                            <div class="form-group">
-                                <label for="date">날짜:</label>
-                                <input
-                                    type="date"
-                                    v-model="newData.date"
-                                    required
-                                    class="form-control"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="category">카테고리:</label>
-                                <select
-                                    v-model="newData.category_id"
-                                    required
-                                    class="form-control"
-                                >
-                                    <option
-                                        v-for="category in categories"
-                                        :key="category.id"
-                                        :value="category.id"
-                                    >
-                                        {{ category.title }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>지출 여부:</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input
-                                            type="radio"
-                                            id="expense"
-                                            value="true"
-                                            v-model="newData.is_expense"
-                                        />
-                                        <label for="expense" class="radio-item"
-                                            >지출</label
-                                        >
-                                        <input
-                                            type="radio"
-                                            id="income"
-                                            value="false"
-                                            v-model="newData.is_expense"
-                                        />
-                                        <label for="income" class="radio-item"
-                                            >수입</label
-                                        >
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>현금 여부:</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input
-                                            type="radio"
-                                            id="cash"
-                                            value="true"
-                                            v-model="newData.is_cash"
-                                        />
-                                        <label for="cash" class="radio-item"
-                                            >현금</label
-                                        >
-                                        <input
-                                            type="radio"
-                                            id="card"
-                                            value="false"
-                                            v-model="newData.is_cash"
-                                        />
-                                        <label for="card" class="radio-item"
-                                            >카드</label
-                                        >
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="amount">금액:</label>
-                                <input
-                                    type="number"
-                                    v-model="newData.amount"
-                                    required
-                                    class="form-control"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="memo">메모:</label>
-                                <input
-                                    type="text"
-                                    v-model="newData.memo"
-                                    class="form-control"
-                                />
-                            </div>
-                            <div class="d-flex justify-content-end mt-3">
-                                <button type="submit" class="btn btn-primary">
-                                    추가
-                                </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
                 <!-- Edit Form Modal -->
@@ -300,11 +190,13 @@
         </div>
     </div>
 </template>
+
 <script setup>
 import { ref, computed, watch, onMounted } from "vue";
 import axios from "axios"; // Import axios
 import Contents from "../components/contents.vue"; // Assuming Contents.vue is in the same directory
 import MonthNavigator from "../components/MonthNavigator.vue"; // Import MonthNavigator component
+import AddButton from "../components/AddButton.vue"; // Import AddButton component
 import { useContentStore } from "@/stores/content.js"; // Adjust the path as necessary
 
 const BASEURI = "http://localhost:3000"; // Ensure the BASEURI is defined
@@ -314,21 +206,11 @@ const currentDate = ref(new Date());
 const isLoading = ref(false);
 const categories = ref([]); // Add categories ref
 
-const showAddForm = ref(false);
 const showEditForm = ref(false);
 const selectedItem = ref(null);
 const selectItem = (item) => {
     selectedItem.value = { ...item };
 };
-
-const newData = ref({
-    date: "",
-    category_id: "",
-    is_expense: true,
-    is_cash: true,
-    amount: 0,
-    memo: "",
-});
 
 const fetchCategories = async () => {
     try {
@@ -342,29 +224,6 @@ const fetchCategories = async () => {
         console.error("Error fetching categories:", error);
     }
     console.log(categories);
-};
-
-const addData = async () => {
-    try {
-        const response = await axios.post(`${BASEURI}/content`, {
-            datetime: newData.value.date,
-            category_id: newData.value.category_id,
-            is_expense: newData.value.is_expense === "true",
-            is_cash: newData.value.is_cash === "true",
-            amount: newData.value.amount,
-            memo: newData.value.memo,
-        });
-        if (response.status === 201) {
-            alert("데이터가 성공적으로 추가되었습니다.");
-            fetchContent();
-            showAddForm.value = false;
-        } else {
-            alert("데이터 추가에 실패했습니다.");
-        }
-    } catch (error) {
-        console.error("Error adding data:", error);
-        alert("데이터 추가 중 에러 발생:" + error);
-    }
 };
 
 const editData = async () => {
@@ -513,75 +372,6 @@ th {
 }
 .button-group button {
     margin-right: 10px; /* 버튼 사이의 간격 설정 */
-}
-.modal {
-    display: block;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
-}
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.form-group {
-    margin-bottom: 1rem;
-    width: 100%;
-}
-
-.radio-group {
-    display: flex;
-    gap: 2rem;
-    margin-top: 0.5rem;
-    width: 100%;
-}
-
-.radio-item {
-    display: flex;
-    align-items: center;
-    width: 50%;
-}
-
-.radio-item input {
-    margin-right: 0.5rem;
-}
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-}
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-}
-.close {
-    align-self: flex-end;
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-}
-.selected-row {
-    background-color: #e0f7fa; /* 원하는 배경색으로 변경하세요 */
 }
 .selected-row {
     background-color: #e0f7fa; /* 원하는 배경색으로 변경하세요 */
