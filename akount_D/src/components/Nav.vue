@@ -53,8 +53,8 @@
                     </li>
                 </ul>
             </div>
-            <div class="fixed-bottom">
-            <AddButton 
+            <div>
+            <AddButton
                             :categories="categories"
                             @data-added="fetchContent"
             /></div>
