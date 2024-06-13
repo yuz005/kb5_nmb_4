@@ -6,7 +6,10 @@
       </div>
       <main class="main-content">
         <div class="header">
-          <div class="calendar-header">
+          <MonthNavigator :currentDate="currentDate"
+            :isLoading="isLoading" @updateDate="handleUpdateDate" />
+            </div>
+          <!-- <div class="calendar-header">
             <button @click="prevMonth" class="arrow-button">←</button>
             <div @dblclick="enableEditing" class="date-display">
               <input
@@ -24,7 +27,7 @@
             </div>
             <button @click="nextMonth" class="arrow-button">→</button>
           </div>
-        </div>
+        </div> -->
       </main>
       <div class="table-responsive">
         <div class="row">
@@ -117,7 +120,8 @@
                 </tr>
                 <tr class="table-secondary">
                   <th scope="row">합계</th>
-                  <td>{{ contentList[0].amount }}</td>
+                  <td v-if="contentList.length > 0">{{ contentList[0].amount }}</td>
+                  <td v-else>-</td>
                   <!-- 배열로 가져온 값을 index값으로 분류해서 합산하는 방법 찾기 -->
                 </tr>
               </tbody>
@@ -130,31 +134,51 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch} from "vue";
 import { useContentStore } from "@/stores/content.js";
-import Contents from "@/components/contents.vue";
+import MonthNavigator from "@/components/MonthNavigator.vue";
 
 const contentStore = useContentStore();
-const { fetchContent } = contentStore;
+const { fetchContent, updateDate } = contentStore;
+const contentList = computed(() => contentStore.contentList || []);
+const currentDate = ref(new Date());
+const isLoading = computed(() => contentStore.isLoading);
+
 fetchContent();
-const contentList = computed(() => contentStore.contentList);
+
 //test
 
+//날짜 변경 시 데이터 업데이트
+watch(currentDate, (newDate) => {
+  updateDate(newDate);
+  fetchContent();
+})
+
+// 날짜 변경 처리 함수
+const handleUpdateDate = (newDate) => {
+  currentDate.value = newDate;
+
+};
+
 // 현재 날짜를 기준으로 초기값 설정
-const today = new Date();
-const currentYear = ref(today.getFullYear());
-const currentMonth = ref(today.getMonth() + 1); // 월은 0부터 시작하므로 +1
+// const today = new Date();
+const currentYear = ref(currentDate.value.getFullYear());
+const currentMonth = ref(currentDate.value.getMonth() + 1); // 월은 0부터 시작하므로 +1
 
 // 편집 모드 상태
 const isEditingYear = ref(false);
 const isEditingMonth = ref(false);
 
-// 현재 월 표시 문자열 (0을 포함한 형식)
 const currentMonthDisplay = computed(() => {
-  return currentMonth.value < 10
-    ? `${currentMonth.value}`
-    : currentMonth.value.toString();
+  return currentMonth.value < 10 ? `0${currentMonth.value}` : currentMonth.value.toString();
 });
+
+// 현재 월 표시 문자열 (0을 포함한 형식)
+// const currentMonthDisplay = computed(() => {
+//   return currentMonth.value < 10
+//     ? `${currentMonth.value}`
+//     : currentMonth.value.toString();
+// });
 
 // 이전 달로 이동합니다.
 const prevMonth = () => {
@@ -164,6 +188,7 @@ const prevMonth = () => {
   } else {
     currentMonth.value -= 1;
   }
+  updateCurrentDate();
 };
 
 // 다음 달로 이동
@@ -175,7 +200,12 @@ const nextMonth = () => {
     currentMonth.value += 1;
   }
 };
-//?
+// 현재 날짜 업데이트 함수
+const updateCurrentDate = () => {
+  currentDate.value = new Date(currentYear.value, currentMonth.value - 1);
+};
+
+
 // 편집 모드 활성화
 const enableEditing = (event) => {
   if (event.target.tagName === "H1") {
