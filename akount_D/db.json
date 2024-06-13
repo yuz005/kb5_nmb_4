@@ -1,278 +1,564 @@
-{
-  "content": [
-    {
-      "datetime": "2024-06-01",
-      "category_id": "101",
-      "is_expense": false,
-      "is_cash": false,
-      "amount": 3000000,
-      "memo": "6월 급여",
-      "id": "1"
-    },
-    {
-      "datetime": "2024-06-02",
-      "category_id": "102",
-      "is_expense": false,
-      "is_cash": false,
-      "amount": 500000,
-      "memo": "이자",
-      "id": "2"
-    },
-    {
-      "id": "3",
-      "datetime": "2024-06-03",
-      "category_id": "103",
-      "is_expense": false,
-      "is_cash": true,
-      "amount": 12000,
-      "memo": "용돈"
-    },
-    {
-      "id": "4",
-      "datetime": "2024-06-04",
-      "category_id": "201",
-      "is_expense": true,
-      "is_cash": false,
-      "amount": 12000,
-      "memo": "회사 점심"
-    },
-    {
-      "id": "5",
-      "datetime": "2024-06-05",
-      "category_id": "207",
-      "is_expense": true,
-      "is_cash": false,
-      "amount": 68000,
-      "memo": "6월 교통비"
-    },
-    {
-      "id": "6",
-      "datetime": "2024-06-06",
-      "category_id": "203",
-      "is_expense": true,
-      "is_cash": false,
-      "amount": 92000,
-      "memo": "다이소 구매"
-    },
-    {
-      "id": "7",
-      "datetime": "2024-06-07",
-      "category_id": "214",
-      "is_expense": true,
-      "is_cash": true,
-      "amount": 192000,
-      "memo": "이발비"
-    },
-    {
-      "id": "5e17",
-      "datetime": "2024-06-07",
-      "category_id": "204",
-      "is_expense": false,
-      "is_cash": false,
-      "amount": 50000,
-      "memo": "같은 날 test"
-    },
-    {
-      "id": "d232",
-      "datetime": "2024-07-05",
-      "category_id": "101",
-      "is_expense": false,
-      "is_cash": false,
-      "amount": 5000000,
-      "memo": "test"
-    },
-    {
-      "id": "9c41",
-      "datetime": "2024-06-01",
-      "category_id": "202",
-      "is_expense": true,
-      "is_cash": true,
-      "amount": 5000,
-      "memo": "빠른 추가 test"
-    },
-    {
-      "id": "183f",
-      "datetime": "2024-06-15",
-      "category_id": "212",
-      "is_expense": true,
-      "is_cash": true,
-      "amount": 2000,
-      "memo": "test"
-    },
-    {
-      "id": "6509",
-      "datetime": "2024-05-07",
-      "category_id": "217",
-      "is_expense": true,
-      "is_cash": true,
-      "amount": 500,
-      "memo": "testing"
-    },
-    {
-      "id": "8196",
-      "datetime": "2024-05-28",
-      "category_id": "208",
-      "is_expense": false,
-      "is_cash": true,
-      "amount": 5000000,
-      "memo": "reset test"
-    },
-    {
-      "id": "a6f7",
-      "datetime": "2024-05-28",
-      "category_id": "216",
-      "is_expense": false,
-      "is_cash": true,
-      "amount": 3000,
-      "memo": "ㅅㄷㄴㅅ"
-    },
-    {
-      "id": "f210",
-      "datetime": "2024-06-01",
-      "category_id": "212",
-      "is_expense": true,
-      "is_cash": true,
-      "amount": 4000,
-      "memo": "test10"
-    }
-  ],
-  "category": [
-    {
-      "id": "101",
-      "title": "월급",
-      "is_expense": false,
-      "is_cash": true
-    },
-    {
-      "id": "102",
-      "title": "이자",
-      "is_expense": false,
-      "is_cash": true
-    },
-    {
-      "id": "103",
-      "title": "용돈",
-      "is_expense": false,
-      "is_cash": true
-    },
-    {
-      "id": "201",
-      "title": "식비",
-      "is_expense": true,
-      "is_cash": false
-    },
-    {
-      "id": "211",
-      "title": "식비",
-      "is_expense": true,
-      "is_cash": true
-    },
-    {
-      "id": "202",
-      "title": "주거/통신",
-      "is_expense": true,
-      "is_cash": false
-    },
-    {
-      "id": "212",
-      "title": "주거/통신",
-      "is_expense": true,
-      "is_cash": true
-    },
-    {
-      "id": "203",
-      "title": "생활용품",
-      "is_expense": true,
-      "is_cash": false
-    },
-    {
-      "id": "213",
-      "title": "생활용품",
-      "is_expense": true,
-      "is_cash": true
-    },
-    {
-      "id": "204",
-      "title": "의복/미용",
-      "is_expense": true,
-      "is_cash": false
-    },
-    {
-      "id": "214",
-      "title": "의복/미용",
-      "is_expense": true,
-      "is_cash": true
-    },
-    {
-      "id": "205",
-      "title": "건강/문화",
-      "is_expense": true,
-      "is_cash": false
-    },
-    {
-      "id": "215",
-      "title": "건강/문화",
-      "is_expense": true,
-      "is_cash": true
-    },
-    {
-      "id": "206",
-      "title": "교육/육아",
-      "is_expense": true,
-      "is_cash": false
-    },
-    {
-      "id": "216",
-      "title": "교육/육아",
-      "is_expense": true,
-      "is_cash": true
-    },
-    {
-      "id": "207",
-      "title": "교통/차량",
-      "is_expense": true,
-      "is_cash": false
-    },
-    {
-      "id": "217",
-      "title": "교통/차량",
-      "is_expense": true,
-      "is_cash": true
-    },
-    {
-      "id": "208",
-      "title": "경조사/회비",
-      "is_expense": true,
-      "is_cash": false
-    },
-    {
-      "id": "218",
-      "title": "경조사/회비",
-      "is_expense": true,
-      "is_cash": true
-    },
-    {
-      "id": "209",
-      "title": "세금",
-      "is_expense": true,
-      "is_cash": false
-    },
-    {
-      "id": "219",
-      "title": "세금",
-      "is_expense": true,
-      "is_cash": true
-    }
-  ],
-  "profile": [
-    {
-      "nickname": "탐정",
-      "account_id": "detective",
-      "email": "detective@example.com",
-      "phone_number": "010-1234-5678",
-      "balance": 0,
-      "id": "1",
-      "pw": "qwer"
-    }
-  ]
+{"content": [
+  {
+    "datetime": "2024-06-01",
+    "category_id": "101",
+    "is_expense": false,
+    "is_cash": false,
+    "amount": 3000000,
+    "memo": "6월 급여",
+    "id": "1"
+  },
+  {
+    "datetime": "2024-06-02",
+    "category_id": "102",
+    "is_expense": false,
+    "is_cash": false,
+    "amount": 500000,
+    "memo": "이자",
+    "id": "2"
+  },
+  {
+    "datetime": "2024-06-03",
+    "category_id": "103",
+    "is_expense": false,
+    "is_cash": true,
+    "amount": 12000,
+    "memo": "용돈",
+    "id": "3"
+  },
+  {
+    "datetime": "2024-06-04",
+    "category_id": "201",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 12000,
+    "memo": "회사 점심",
+    "id": "4"
+  },
+  {
+    "datetime": "2024-06-05",
+    "category_id": "207",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 68000,
+    "memo": "6월 교통비",
+    "id": "5"
+  },
+  {
+    "datetime": "2024-06-06",
+    "category_id": "203",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 92000,
+    "memo": "다이소 구매",
+    "id": "6"
+  },
+  {
+    "datetime": "2024-06-07",
+    "category_id": "214",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 192000,
+    "memo": "이발비",
+    "id": "7"
+  },
+  {
+    "datetime": "2024-06-07",
+    "category_id": "204",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 50000,
+    "memo": "옷 구매",
+    "id": "8"
+  },
+  {
+    "datetime": "2024-06-10",
+    "category_id": "206",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 150000,
+    "memo": "학원비",
+    "id": "9"
+  },
+  {
+    "datetime": "2024-06-12",
+    "category_id": "205",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 50000,
+    "memo": "병원 진료",
+    "id": "10"
+  },
+  {
+    "datetime": "2024-06-15",
+    "category_id": "202",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 300000,
+    "memo": "월세",
+    "id": "11"
+  },
+  {
+    "datetime": "2024-06-18",
+    "category_id": "208",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 100000,
+    "memo": "친구 결혼식",
+    "id": "12"
+  },
+  {
+    "datetime": "2024-06-20",
+    "category_id": "211",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 15000,
+    "memo": "저녁 식사",
+    "id": "13"
+  },
+  {
+    "datetime": "2024-06-25",
+    "category_id": "212",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 25000,
+    "memo": "휴대폰 요금",
+    "id": "14"
+  },
+  {
+    "datetime": "2024-06-28",
+    "category_id": "213",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 5000,
+    "memo": "세탁 세제",
+    "id": "15"
+  },
+  {
+    "datetime": "2024-06-30",
+    "category_id": "215",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 30000,
+    "memo": "영화 관람",
+    "id": "16"
+  },{
+    "datetime": "2024-05-01",
+    "category_id": "101",
+    "is_expense": false,
+    "is_cash": false,
+    "amount": 3000000,
+    "memo": "5월 급여",
+    "id": "1"
+  },
+  {
+    "datetime": "2024-05-02",
+    "category_id": "102",
+    "is_expense": false,
+    "is_cash": false,
+    "amount": 500000,
+    "memo": "이자",
+    "id": "2"
+  },
+  {
+    "datetime": "2024-05-03",
+    "category_id": "103",
+    "is_expense": false,
+    "is_cash": true,
+    "amount": 15000,
+    "memo": "용돈",
+    "id": "3"
+  },
+  {
+    "datetime": "2024-05-04",
+    "category_id": "201",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 12000,
+    "memo": "회사 점심",
+    "id": "4"
+  },
+  {
+    "datetime": "2024-05-05",
+    "category_id": "207",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 70000,
+    "memo": "5월 교통비",
+    "id": "5"
+  },
+  {
+    "datetime": "2024-05-06",
+    "category_id": "203",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 80000,
+    "memo": "마트 구매",
+    "id": "6"
+  },
+  {
+    "datetime": "2024-05-07",
+    "category_id": "214",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 45000,
+    "memo": "이발비",
+    "id": "7"
+  },
+  {
+    "datetime": "2024-05-10",
+    "category_id": "204",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 100000,
+    "memo": "옷 구매",
+    "id": "8"
+  },
+  {
+    "datetime": "2024-05-12",
+    "category_id": "206",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 200000,
+    "memo": "학원비",
+    "id": "9"
+  },
+  {
+    "datetime": "2024-05-15",
+    "category_id": "205",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 60000,
+    "memo": "병원 진료",
+    "id": "10"
+  },
+  {
+    "datetime": "2024-05-20",
+    "category_id": "202",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 300000,
+    "memo": "월세",
+    "id": "11"
+  },
+  {
+    "datetime": "2024-05-25",
+    "category_id": "208",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 150000,
+    "memo": "친구 결혼식",
+    "id": "12"
+  },
+  {
+    "datetime": "2024-05-27",
+    "category_id": "211",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 25000,
+    "memo": "저녁 식사",
+    "id": "13"
+  },
+  {
+    "datetime": "2024-05-28",
+    "category_id": "212",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 40000,
+    "memo": "인터넷 요금",
+    "id": "14"
+  },
+  {
+    "datetime": "2024-05-30",
+    "category_id": "213",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 15000,
+    "memo": "세탁 세제",
+    "id": "15"
+  },
+  {
+    "datetime": "2024-05-31",
+    "category_id": "215",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 30000,
+    "memo": "영화 관람",
+    "id": "16"
+  },
+  {
+    "datetime": "2024-07-01",
+    "category_id": "101",
+    "is_expense": false,
+    "is_cash": false,
+    "amount": 3000000,
+    "memo": "7월 급여",
+    "id": "17"
+  },
+  {
+    "datetime": "2024-07-02",
+    "category_id": "102",
+    "is_expense": false,
+    "is_cash": false,
+    "amount": 500000,
+    "memo": "이자",
+    "id": "18"
+  },
+  {
+    "datetime": "2024-07-03",
+    "category_id": "103",
+    "is_expense": false,
+    "is_cash": true,
+    "amount": 12000,
+    "memo": "용돈",
+    "id": "19"
+  },
+  {
+    "datetime": "2024-07-04",
+    "category_id": "201",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 12000,
+    "memo": "회사 점심",
+    "id": "20"
+  },
+  {
+    "datetime": "2024-07-05",
+    "category_id": "207",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 70000,
+    "memo": "7월 교통비",
+    "id": "21"
+  },
+  {
+    "datetime": "2024-07-06",
+    "category_id": "203",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 85000,
+    "memo": "다이소 구매",
+    "id": "22"
+  },
+  {
+    "datetime": "2024-07-07",
+    "category_id": "214",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 45000,
+    "memo": "이발비",
+    "id": "23"
+  },
+  {
+    "datetime": "2024-07-10",
+    "category_id": "204",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 100000,
+    "memo": "옷 구매",
+    "id": "24"
+  },
+  {
+    "datetime": "2024-07-12",
+    "category_id": "206",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 200000,
+    "memo": "학원비",
+    "id": "25"
+  },
+  {
+    "datetime": "2024-07-15",
+    "category_id": "205",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 50000,
+    "memo": "병원 진료",
+    "id": "26"
+  },
+  {
+    "datetime": "2024-07-20",
+    "category_id": "202",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 300000,
+    "memo": "월세",
+    "id": "27"
+  },
+  {
+    "datetime": "2024-07-22",
+    "category_id": "208",
+    "is_expense": true,
+    "is_cash": false,
+    "amount": 150000,
+    "memo": "친구 결혼식",
+    "id": "28"
+  },
+  {
+    "datetime": "2024-07-25",
+    "category_id": "211",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 25000,
+    "memo": "저녁 식사",
+    "id": "29"
+  },
+  {
+    "datetime": "2024-07-27",
+    "category_id": "212",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 30000,
+    "memo": "휴대폰 요금",
+    "id": "30"
+  },
+  {
+    "datetime": "2024-07-28",
+    "category_id": "213",
+    "is_expense": true,
+    "is_cash": true,
+    "amount": 15000,
+    "memo": "세탁 세제",
+    "id": "31"
+  }
+],
+"category": [
+  {
+    "id": "101",
+    "title": "월급",
+    "is_expense": false,
+    "is_cash": true
+  },
+  {
+    "id": "102",
+    "title": "이자",
+    "is_expense": false,
+    "is_cash": true
+  },
+  {
+    "id": "103",
+    "title": "용돈",
+    "is_expense": false,
+    "is_cash": true
+  },
+  {
+    "id": "201",
+    "title": "식비",
+    "is_expense": true,
+    "is_cash": false
+  },
+  {
+    "id": "211",
+    "title": "식비",
+    "is_expense": true,
+    "is_cash": true
+  },
+  {
+    "id": "202",
+    "title": "주거/통신",
+    "is_expense": true,
+    "is_cash": false
+  },
+  {
+    "id": "212",
+    "title": "주거/통신",
+    "is_expense": true,
+    "is_cash": true
+  },
+  {
+    "id": "203",
+    "title": "생활용품",
+    "is_expense": true,
+    "is_cash": false
+  },
+  {
+    "id": "213",
+    "title": "생활용품",
+    "is_expense": true,
+    "is_cash": true
+  },
+  {
+    "id": "204",
+    "title": "의복/미용",
+    "is_expense": true,
+    "is_cash": false
+  },
+  {
+    "id": "214",
+    "title": "의복/미용",
+    "is_expense": true,
+    "is_cash": true
+  },
+  {
+    "id": "205",
+    "title": "건강/문화",
+    "is_expense": true,
+    "is_cash": false
+  },
+  {
+    "id": "215",
+    "title": "건강/문화",
+    "is_expense": true,
+    "is_cash": true
+  },
+  {
+    "id": "206",
+    "title": "교육/육아",
+    "is_expense": true,
+    "is_cash": false
+  },
+  {
+    "id": "216",
+    "title": "교육/육아",
+    "is_expense": true,
+    "is_cash": true
+  },
+  {
+    "id": "207",
+    "title": "교통/차량",
+    "is_expense": true,
+    "is_cash": false
+  },
+  {
+    "id": "217",
+    "title": "교통/차량",
+    "is_expense": true,
+    "is_cash": true
+  },
+  {
+    "id": "208",
+    "title": "경조사/회비",
+    "is_expense": true,
+    "is_cash": false
+  },
+  {
+    "id": "218",
+    "title": "경조사/회비",
+    "is_expense": true,
+    "is_cash": true
+  },
+  {
+    "id": "209",
+    "title": "세금",
+    "is_expense": true,
+    "is_cash": false
+  },
+  {
+    "id": "219",
+    "title": "세금",
+    "is_expense": true,
+    "is_cash": true
+  }
+],
+"profile": [
+  {
+    "nickname": "탐정",
+    "account_id": "detective",
+    "email": "detective@example.com",
+    "phone_number": "010-1234-5678",
+    "balance": 0,
+    "id": "1",
+    "pw": "qwer"
+  }
+]
 }
