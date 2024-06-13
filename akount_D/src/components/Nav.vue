@@ -65,7 +65,7 @@
 <script setup lang="ts">
 // import { defineProps } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
+import axios from "axios";
 import { ref, onMounted } from 'vue';
 import { useMainStore } from "@/stores/content.js";
 import { useRoute } from "vue-router";
@@ -78,7 +78,35 @@ const profileStore = useMainStore();
 const contentStore = useContentStore();
 const currentDate = ref(new Date());
 
+const categories = ref([]);
 
+const BASEURI = "http://localhost:3000";
+const fetchCategories = async () => {
+    try {
+        const response = await axios.get(`${BASEURI}/category`);
+        if (response.status === 200) {
+            categories.value = response.data;
+        } else {
+            console.error("Failed to fetch categories");
+        }
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+    }
+};
+const fetchContent = async () => {
+    try {
+        const response = await axios.get(`${BASEURI}/content`);
+        if (response.status === 200) {
+            contentStore.state.contentList = response.data || [];
+        } else {
+            console.error("Failed to fetch data");
+            alert("데이터 조회 실패");
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        alert("에러 발생:" + error);
+    } 
+};
 onMounted(async() => {
       await profileStore.fetchProfile();
     });

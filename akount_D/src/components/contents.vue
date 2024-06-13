@@ -38,5 +38,5 @@ watch(
     <td>{{ getCategoryTitle(contents.category_id) }}</td>
     <td>{{ contents.amount }}</td>
     <td>{{ contents.memo }}</td>
-    <td>{{ contents.is_cash }}</td>
+    <!-- <td>{{ contents.is_cash }}</td> -->
 </template>
