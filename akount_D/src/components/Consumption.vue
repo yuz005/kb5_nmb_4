@@ -1,18 +1,18 @@
 <template>
     <div class="daily-summary col-md-4 p-3 border rounded">
         <h2>오늘의 현황</h2>
-        <div v-if="currentData" class="card p-3">
-            <div class="mb-2">
-                <{{ getExpenseType(currentData.category_id) }}>
-            </div>
-            <div class="mb-2">{{ formatDate(currentData.datetime) }}</div>
-            <div class="mb-2">{{ currentData.amount }}원</div>
-            <div class="mb-2">{{ currentData.memo }}</div>
-            <div class="mb-2">
-                카테고리: {{ getCategoryTitle(currentData.category_id) }}
-            </div>
-            <div class="mb-2">
-                유형: {{ getPaymentType(currentData.category_id) }}
+        <div v-if="currentData.length > 0" class="card p-3">
+            <div v-for="(data, index) in currentData" :key="index" class="mb-3">
+                <div class="mb-2">{{ getExpenseType(data.category_id) }}</div>
+                <div class="mb-2">{{ formatDate(data.datetime) }}</div>
+                <div class="mb-2">{{ data.amount }}원</div>
+                <div class="mb-2">{{ data.memo }}</div>
+                <div class="mb-2">
+                    카테고리: {{ getCategoryTitle(data.category_id) }}
+                </div>
+                <div class="mb-2">
+                    유형: {{ getPaymentType(data.category_id) }}
+                </div>
             </div>
         </div>
         <div v-else class="card p-3">
@@ -33,7 +33,7 @@ const props = defineProps({
 });
 
 const categories = ref([]);
-const currentData = ref(null);
+const currentData = ref([]);
 
 const fetchCategories = async () => {
     try {
@@ -53,16 +53,16 @@ const fetchData = async (date) => {
         const response = await axios.get(dbUrl);
         if (response.status === 200) {
             const data = response.data.content;
-            currentData.value = data.find((item) =>
-                item.datetime.startsWith(date)
+            currentData.value = data.filter(
+                (item) => item.datetime && item.datetime.startsWith(date)
             );
         } else {
-            currentData.value = null;
+            currentData.value = [];
             console.error("No data found for the selected date");
         }
     } catch (error) {
         console.error("Error fetching data:", error);
-        currentData.value = null;
+        currentData.value = [];
     }
 };
 
