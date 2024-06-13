@@ -108,40 +108,52 @@
                             </div>
                             <div class="form-group">
                                 <label>지출 여부:</label>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id="expense"
-                                        value="true"
-                                        v-model="newData.is_expense"
-                                    />
-                                    <label for="expense">지출</label>
-                                    <input
-                                        type="radio"
-                                        id="income"
-                                        value="false"
-                                        v-model="newData.is_expense"
-                                    />
-                                    <label for="income">수입</label>
+                                <div class="radio-group">
+                                    <div class="radio-item">
+                                        <input
+                                            type="radio"
+                                            id="expense"
+                                            value="true"
+                                            v-model="newData.is_expense"
+                                        />
+                                        <label for="expense" class="radio-item"
+                                            >지출</label
+                                        >
+                                        <input
+                                            type="radio"
+                                            id="income"
+                                            value="false"
+                                            v-model="newData.is_expense"
+                                        />
+                                        <label for="income" class="radio-item"
+                                            >수입</label
+                                        >
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>현금 여부:</label>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id="cash"
-                                        value="true"
-                                        v-model="newData.is_cash"
-                                    />
-                                    <label for="cash">현금</label>
-                                    <input
-                                        type="radio"
-                                        id="card"
-                                        value="false"
-                                        v-model="newData.is_cash"
-                                    />
-                                    <label for="card">카드</label>
+                                <div class="radio-group">
+                                    <div class="radio-item">
+                                        <input
+                                            type="radio"
+                                            id="cash"
+                                            value="true"
+                                            v-model="newData.is_cash"
+                                        />
+                                        <label for="cash" class="radio-item"
+                                            >현금</label
+                                        >
+                                        <input
+                                            type="radio"
+                                            id="card"
+                                            value="false"
+                                            v-model="newData.is_cash"
+                                        />
+                                        <label for="card" class="radio-item"
+                                            >카드</label
+                                        >
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -203,40 +215,60 @@
                             </div>
                             <div class="form-group">
                                 <label>지출 여부:</label>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id="expense_edit"
-                                        value="true"
-                                        v-model="selectedItem.is_expense"
-                                    />
-                                    <label for="expense_edit">지출</label>
-                                    <input
-                                        type="radio"
-                                        id="income_edit"
-                                        value="false"
-                                        v-model="selectedItem.is_expense"
-                                    />
-                                    <label for="income_edit">수입</label>
+                                <div class="radio-group">
+                                    <div class="radio-item">
+                                        <input
+                                            type="radio"
+                                            id="expense_edit"
+                                            value="true"
+                                            v-model="selectedItem.is_expense"
+                                        />
+                                        <label
+                                            for="expense_edit"
+                                            class="radio-item"
+                                            >지출</label
+                                        >
+                                        <input
+                                            type="radio"
+                                            id="income_edit"
+                                            value="false"
+                                            v-model="selectedItem.is_expense"
+                                        />
+                                        <label
+                                            for="income_edit"
+                                            class="radio-item"
+                                            >수입</label
+                                        >
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>현금 여부:</label>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id="cash_edit"
-                                        value="true"
-                                        v-model="selectedItem.is_cash"
-                                    />
-                                    <label for="cash_edit">현금</label>
-                                    <input
-                                        type="radio"
-                                        id="card_edit"
-                                        value="false"
-                                        v-model="selectedItem.is_cash"
-                                    />
-                                    <label for="card_edit">카드</label>
+                                <div class="radio-group">
+                                    <div class="radio-item">
+                                        <input
+                                            type="radio"
+                                            id="cash_edit"
+                                            value="true"
+                                            v-model="selectedItem.is_cash"
+                                        />
+                                        <label
+                                            for="cash_edit"
+                                            class="radio-item"
+                                            >현금</label
+                                        >
+                                        <input
+                                            type="radio"
+                                            id="card_edit"
+                                            value="false"
+                                            v-model="selectedItem.is_cash"
+                                        />
+                                        <label
+                                            for="card_edit"
+                                            class="radio-item"
+                                            >카드</label
+                                        >
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -506,8 +538,25 @@ th {
     align-items: center;
 }
 .form-group {
+    margin-bottom: 1rem;
     width: 100%;
-    margin-bottom: 15px;
+}
+
+.radio-group {
+    display: flex;
+    gap: 2rem;
+    margin-top: 0.5rem;
+    width: 100%;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    width: 50%;
+}
+
+.radio-item input {
+    margin-right: 0.5rem;
 }
 .form-group label {
     display: block;

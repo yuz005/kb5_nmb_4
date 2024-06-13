@@ -1,18 +1,22 @@
 {
   "content": [
     {
-      "id": "1",
-      "datetime": "2024-06-01T00:00:00+09:00",
+      "datetime": "2024-06-01",
       "category_id": "101",
+      "is_expense": false,
+      "is_cash": false,
       "amount": 3000000,
-      "memo": "6월 급여"
+      "memo": "6월 급여",
+      "id": "1"
     },
     {
-      "id": "2",
-      "datetime": "2024-06-02T00:00:00+09:00",
+      "datetime": "2024-06-02",
       "category_id": "102",
+      "is_expense": false,
+      "is_cash": false,
       "amount": 500000,
-      "memo": "이자"
+      "memo": "이자",
+      "id": "2"
     },
     {
       "id": "3",
@@ -50,13 +54,13 @@
       "memo": "이발비"
     },
     {
-      "datetime": "2024-06-27",
-      "category_id": "201",
+      "datetime": "2024-06-18",
+      "category_id": "101",
       "is_expense": false,
       "is_cash": false,
-      "amount": 6500,
-      "memo": "점심값_ 수정",
-      "id": "b661"
+      "amount": 1000000,
+      "memo": "test_ 수정",
+      "id": "a9ec"
     }
   ],
   "category": [
