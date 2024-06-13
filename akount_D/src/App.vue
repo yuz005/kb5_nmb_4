@@ -5,6 +5,8 @@ import { useContentStore } from "@/stores/content.js";
 
 import Nav from "@/components/Nav.vue";
 
+import Loading from "@/components/Loading.vue";
+
 const store = useContentStore();
 const fetchContent = store.fetchContent;
 onMounted(() => {
@@ -15,6 +17,7 @@ onMounted(() => {
 <template>
     <div class="container">
         <Nav></Nav>
+        <Loading />
         <router-view />
     </div>
 </template>
