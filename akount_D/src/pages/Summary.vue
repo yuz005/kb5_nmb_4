@@ -13,6 +13,21 @@
                     />
                 </div>
             </main>
+            <div class="row">
+                <div class="col-md-6">
+                    <ExpenseChart
+                        :expenses="{ card: expenseCardTotals, cash: expenseCashTotals }"
+                        :income="totalIncome"
+                    />
+                </div>
+                <div class="col-md-6">
+                    <CategoryPieChart
+                        :categories="uniqueOutcomeCategories"
+                        :expenses="{ card: expenseCardTotals, cash: expenseCashTotals }"
+                    />
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <div class="row">
                     <div class="col">
@@ -127,6 +142,9 @@
 import { ref, computed, watch, onMounted } from "vue";
 import { useContentStore } from "@/stores/content.js";
 import MonthNavigator from "@/components/MonthNavigator.vue";
+import ExpenseChart from "@/components/ExpenseChart.vue";
+import CategoryPieChart from "@/components/CategoryPieChart.vue";
+
 
 // Content store 사용
 const contentStore = useContentStore();
@@ -261,7 +279,6 @@ const totalIncome = computed(() =>
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
 }
 
 .columns {
