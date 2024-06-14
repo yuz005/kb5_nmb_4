@@ -122,7 +122,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import axios from "axios";
-const BASEURI = "http://localhost:3000";
+const BASEURI = "http://3.38.169.77:3000";
 
 const categories = ref([]);
 
