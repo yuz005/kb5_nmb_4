@@ -139,6 +139,7 @@ const submitEditForm = () => {
     width: 100%;
     height: 100%;
     overflow: auto;
+    color: black;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
 }
@@ -147,6 +148,7 @@ const submitEditForm = () => {
     background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
+    color: black;
     border: 1px solid #888;
     width: 80%;
     max-width: 500px;
