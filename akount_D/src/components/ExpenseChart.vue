@@ -42,15 +42,41 @@ const chartData = computed(() => {
 const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            labels: {
+                color: 'white', // 레전드 텍스트 색상
+            }
+        },
+        title: {
+            display: true,
+            text: '소비 및 수입',
+            color: 'white', // 타이틀 텍스트 색상
+            font: {
+                size: 20 // 타이틀 텍스트 크기
+            }
+        },
+        tooltip: {
+            bodyColor: 'white', // 툴팁 텍스트 색상
+            titleColor: 'white',
+        }
+    },
     scales: {
         x: {
-            stacked: true
+            stacked: true,
+            ticks: {
+                color: 'white' // x축 텍스트 색상
+            }
         },
         y: {
-            stacked: true
+            stacked: true,
+            ticks: {
+                color: 'white' // y축 텍스트 색상
+            }
         }
     }
 };
+
 </script>
 
 <style scoped>
