@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { reactive, computed, ref, watch } from "vue";
 import axios from "axios";
 
-const BASEURI = "http://localhost:3000"; // JSON 서버 주소
+const BASEURI = "http://3.38.169.77:3000"; // JSON 서버 주소
 
 export const useMainStore = defineStore("main", () => {
     const profile = reactive({
@@ -128,7 +128,7 @@ export const useContentStore = defineStore("contentList", () => {
     const fetchCategories = async () => {
         isLoading.value = true;
         try {
-            const response = await axios.get("http://localhost:3000/category");
+            const response = await axios.get(`${BASEURI}/category`);
             if (response.status === 200) {
                 state.categories = response.data || [];
             } else {

@@ -94,7 +94,7 @@ import AddButton from "../components/AddButton.vue";
 import EditFormModal from "../components/EditFormModal.vue";
 import { useContentStore } from "@/stores/content.js";
 
-const BASEURI = "http://localhost:3000";
+const BASEURI = "http://3.38.169.77:3000";
 const contentStore = useContentStore();
 const currentDate = ref(new Date());
 const isLoading = ref(false);
