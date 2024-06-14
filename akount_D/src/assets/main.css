@@ -1,4 +1,22 @@
-.container {
-    padding: 10px 10px 10px 10px;
-    display: flex;
+
+/* Import Google Web Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
+/* Global font settings */
+
+
+/* 제목, 소제목 등 다른 요소들에 대한 폰트 설정 */
+h1, h2, h3{
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 700; /* 제목은 더 두꺼운 글꼴 두께로 설정 */
 }
+h4, h5, h6, div, a{
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 400; /* 제목은 더 두꺼운 글꼴 두께로 설정 */
+  }
+
+body, html, #app {
+    background-color: #202638; /* 원하는 배경색으로 변경 */
+    color: white;
+  }
+  
